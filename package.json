@@ -1,0 +1,23 @@
+{
+  "name": "@engine/math",
+  "version": "1.0.0",
+  "description": "High-performance math library for game engine - Isomorphic TS/AS",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "@types/bun": "^1.3.8",
+    "assemblyscript": "^0.28.9"
+  }
+}
