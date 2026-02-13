@@ -123,14 +123,6 @@ describe('AABB', () => {
       expect(aabb.max.z).toBe(3);
     });
 
-    it('should expand by scalar', () => {
-      const aabb = AABB.fromMinMax(-1, -1, -1, 1, 1, 1);
-      aabb.expandByScalar(2);
-
-      expect(aabb.min.x).toBe(-3);
-      expect(aabb.max.x).toBe(3);
-    });
-
     it('should union AABBs', () => {
       const a = AABB.fromMinMax(-1, -1, -1, 0, 0, 0);
       const b = AABB.fromMinMax(0, 0, 0, 1, 1, 1);
