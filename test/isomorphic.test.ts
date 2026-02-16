@@ -10,8 +10,10 @@ import asc from 'assemblyscript/dist/asc.js';
 import { readFileSync, writeFileSync, mkdirSync, existsSync, rmSync } from 'fs';
 import { join, dirname } from 'path';
 
-const SRC_DIR = join(dirname(__dirname), 'src');
-const BUILD_DIR = join(dirname(__dirname), 'build');
+// Use import.meta.dir (Bun) to get the actual source directory, not the compiled dist directory
+const PACKAGE_ROOT = dirname(import.meta.dir);
+const SRC_DIR = join(PACKAGE_ROOT, 'src');
+const BUILD_DIR = join(PACKAGE_ROOT, 'build');
 
 // List of source files to test (excluding types.ts which uses TS-specific constructs)
 const SOURCE_FILES = [
