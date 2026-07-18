@@ -1,7 +1,7 @@
 {
   "name": "@engine/math",
   "version": "1.0.0",
-  "description": "High-performance math library for game engine - Isomorphic TS/AS",
+  "description": "High-performance math library for game engine",
   "type": "module",
   "main": "src/index.ts",
   "types": "src/index.ts",
@@ -17,7 +17,6 @@
   },
   "devDependencies": {
     "typescript": "catalog:",
-    "@types/bun": "catalog:",
-    "assemblyscript": "catalog:"
+    "@types/bun": "catalog:"
   }
 }
