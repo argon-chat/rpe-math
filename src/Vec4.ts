@@ -1,23 +1,22 @@
 import { EPSILON, approxEqual } from './constants';
 
 export class Vec4 {
-  x: f64;
-  y: f64;
-  z: f64;
-  w: f64;
+  x: number;
+  y: number;
+  z: number;
+  w: number;
 
-  constructor(x: f64 = 0, y: f64 = 0, z: f64 = 0, w: f64 = 0) {
+  constructor(x: number = 0, y: number = 0, z: number = 0, w: number = 0) {
     this.x = x;
     this.y = y;
     this.z = z;
     this.w = w;
   }
 
-  @inline static zero(): Vec4 { return new Vec4(0, 0, 0, 0); }
-  @inline static one(): Vec4 { return new Vec4(1, 1, 1, 1); }
+  static zero(): Vec4 { return new Vec4(0, 0, 0, 0); }
+  static one(): Vec4 { return new Vec4(1, 1, 1, 1); }
 
-  @inline
-  set(x: f64, y: f64, z: f64, w: f64): this {
+  set(x: number, y: number, z: number, w: number): this {
     this.x = x;
     this.y = y;
     this.z = z;
@@ -25,7 +24,6 @@ export class Vec4 {
     return this;
   }
 
-  @inline
   copy(v: Vec4): this {
     this.x = v.x;
     this.y = v.y;
@@ -34,12 +32,10 @@ export class Vec4 {
     return this;
   }
 
-  @inline
   clone(): Vec4 {
     return new Vec4(this.x, this.y, this.z, this.w);
   }
 
-  @inline
   add(v: Vec4): this {
     this.x += v.x;
     this.y += v.y;
@@ -48,8 +44,7 @@ export class Vec4 {
     return this;
   }
 
-  @inline
-  addScalar(s: f64): this {
+  addScalar(s: number): this {
     this.x += s;
     this.y += s;
     this.z += s;
@@ -57,7 +52,6 @@ export class Vec4 {
     return this;
   }
 
-  @inline
   sub(v: Vec4): this {
     this.x -= v.x;
     this.y -= v.y;
@@ -66,8 +60,7 @@ export class Vec4 {
     return this;
   }
 
-  @inline
-  subScalar(s: f64): this {
+  subScalar(s: number): this {
     this.x -= s;
     this.y -= s;
     this.z -= s;
@@ -75,7 +68,6 @@ export class Vec4 {
     return this;
   }
 
-  @inline
   mul(v: Vec4): this {
     this.x *= v.x;
     this.y *= v.y;
@@ -84,8 +76,7 @@ export class Vec4 {
     return this;
   }
 
-  @inline
-  mulScalar(s: f64): this {
+  mulScalar(s: number): this {
     this.x *= s;
     this.y *= s;
     this.z *= s;
@@ -93,7 +84,6 @@ export class Vec4 {
     return this;
   }
 
-  @inline
   div(v: Vec4): this {
     this.x /= v.x;
     this.y /= v.y;
@@ -102,9 +92,8 @@ export class Vec4 {
     return this;
   }
 
-  @inline
-  divScalar(s: f64): this {
-    const inv: f64 = 1.0 / s;
+  divScalar(s: number): this {
+    const inv: number = 1.0 / s;
     this.x *= inv;
     this.y *= inv;
     this.z *= inv;
@@ -112,7 +101,6 @@ export class Vec4 {
     return this;
   }
 
-  @inline
   negate(): this {
     this.x = -this.x;
     this.y = -this.y;
@@ -121,7 +109,6 @@ export class Vec4 {
     return this;
   }
 
-  @inline
   abs(): this {
     if (this.x < 0) this.x = -this.x;
     if (this.y < 0) this.y = -this.y;
@@ -130,7 +117,6 @@ export class Vec4 {
     return this;
   }
 
-  @inline
   floor(): this {
     this.x = Math.floor(this.x);
     this.y = Math.floor(this.y);
@@ -139,7 +125,6 @@ export class Vec4 {
     return this;
   }
 
-  @inline
   ceil(): this {
     this.x = Math.ceil(this.x);
     this.y = Math.ceil(this.y);
@@ -148,7 +133,6 @@ export class Vec4 {
     return this;
   }
 
-  @inline
   round(): this {
     this.x = Math.round(this.x);
     this.y = Math.round(this.y);
@@ -157,7 +141,6 @@ export class Vec4 {
     return this;
   }
 
-  @inline
   min(v: Vec4): this {
     if (v.x < this.x) this.x = v.x;
     if (v.y < this.y) this.y = v.y;
@@ -166,7 +149,6 @@ export class Vec4 {
     return this;
   }
 
-  @inline
   max(v: Vec4): this {
     if (v.x > this.x) this.x = v.x;
     if (v.y > this.y) this.y = v.y;
@@ -188,9 +170,9 @@ export class Vec4 {
   }
 
   normalize(): this {
-    const len: f64 = this.length();
+    const len: number = this.length();
     if (len > EPSILON) {
-      const invLen: f64 = 1.0 / len;
+      const invLen: number = 1.0 / len;
       this.x *= invLen;
       this.y *= invLen;
       this.z *= invLen;
@@ -199,7 +181,7 @@ export class Vec4 {
     return this;
   }
 
-  lerp(v: Vec4, t: f64): this {
+  lerp(v: Vec4, t: number): this {
     this.x += (v.x - this.x) * t;
     this.y += (v.y - this.y) * t;
     this.z += (v.z - this.z) * t;
@@ -207,49 +189,46 @@ export class Vec4 {
     return this;
   }
 
-  @inline
-  dot(v: Vec4): f64 {
+  dot(v: Vec4): number {
     return this.x * v.x + this.y * v.y + this.z * v.z + this.w * v.w;
   }
 
-  @inline
-  lengthSq(): f64 {
+  lengthSq(): number {
     return this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
   }
 
-  @inline
-  length(): f64 {
+  length(): number {
     return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
   }
 
-  manhattanLength(): f64 {
-    let ax: f64 = this.x; if (ax < 0) ax = -ax;
-    let ay: f64 = this.y; if (ay < 0) ay = -ay;
-    let az: f64 = this.z; if (az < 0) az = -az;
-    let aw: f64 = this.w; if (aw < 0) aw = -aw;
+  manhattanLength(): number {
+    let ax: number = this.x; if (ax < 0) ax = -ax;
+    let ay: number = this.y; if (ay < 0) ay = -ay;
+    let az: number = this.z; if (az < 0) az = -az;
+    let aw: number = this.w; if (aw < 0) aw = -aw;
     return ax + ay + az + aw;
   }
 
-  isZero(epsilon: f64 = EPSILON): bool {
-    let ax: f64 = this.x; if (ax < 0) ax = -ax;
-    let ay: f64 = this.y; if (ay < 0) ay = -ay;
-    let az: f64 = this.z; if (az < 0) az = -az;
-    let aw: f64 = this.w; if (aw < 0) aw = -aw;
+  isZero(epsilon: number = EPSILON): boolean {
+    let ax: number = this.x; if (ax < 0) ax = -ax;
+    let ay: number = this.y; if (ay < 0) ay = -ay;
+    let az: number = this.z; if (az < 0) az = -az;
+    let aw: number = this.w; if (aw < 0) aw = -aw;
     return ax <= epsilon && ay <= epsilon && az <= epsilon && aw <= epsilon;
   }
 
-  isFinite(): bool {
+  isFinite(): boolean {
     return isFinite(this.x) && isFinite(this.y) && isFinite(this.z) && isFinite(this.w);
   }
 
-  equals(v: Vec4, epsilon: f64 = EPSILON): bool {
+  equals(v: Vec4, epsilon: number = EPSILON): boolean {
     return approxEqual(this.x, v.x, epsilon) &&
            approxEqual(this.y, v.y, epsilon) &&
            approxEqual(this.z, v.z, epsilon) &&
            approxEqual(this.w, v.w, epsilon);
   }
 
-  exactEquals(v: Vec4): bool {
+  exactEquals(v: Vec4): boolean {
     return this.x == v.x && this.y == v.y && this.z == v.z && this.w == v.w;
   }
 
@@ -280,7 +259,7 @@ export class Vec4 {
     return out;
   }
 
-  static scale(v: Vec4, s: f64, out: Vec4 | null = null): Vec4 {
+  static scale(v: Vec4, s: number, out: Vec4 | null = null): Vec4 {
     if (out === null) out = new Vec4();
     out.x = v.x * s;
     out.y = v.y * s;
@@ -291,9 +270,9 @@ export class Vec4 {
 
   static normalize(v: Vec4, out: Vec4 | null = null): Vec4 {
     if (out === null) out = new Vec4();
-    const len: f64 = Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w);
+    const len: number = Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w);
     if (len > EPSILON) {
-      const invLen: f64 = 1.0 / len;
+      const invLen: number = 1.0 / len;
       out.x = v.x * invLen;
       out.y = v.y * invLen;
       out.z = v.z * invLen;
@@ -307,7 +286,7 @@ export class Vec4 {
     return out;
   }
 
-  static lerp(a: Vec4, b: Vec4, t: f64, out: Vec4 | null = null): Vec4 {
+  static lerp(a: Vec4, b: Vec4, t: number, out: Vec4 | null = null): Vec4 {
     if (out === null) out = new Vec4();
     out.x = a.x + (b.x - a.x) * t;
     out.y = a.y + (b.y - a.y) * t;
@@ -316,8 +295,7 @@ export class Vec4 {
     return out;
   }
 
-  @inline
-  static dot(a: Vec4, b: Vec4): f64 {
+  static dot(a: Vec4, b: Vec4): number {
     return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
   }
 

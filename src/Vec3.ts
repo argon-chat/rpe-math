@@ -1,34 +1,32 @@
 import { EPSILON, approxEqual } from './constants';
 
 export class Vec3 {
-  x: f64;
-  y: f64;
-  z: f64;
+  x: number;
+  y: number;
+  z: number;
 
-  constructor(x: f64 = 0, y: f64 = 0, z: f64 = 0) {
+  constructor(x: number = 0, y: number = 0, z: number = 0) {
     this.x = x;
     this.y = y;
     this.z = z;
   }
 
-  @inline static zero(): Vec3 { return new Vec3(0, 0, 0); }
-  @inline static one(): Vec3 { return new Vec3(1, 1, 1); }
-  @inline static up(): Vec3 { return new Vec3(0, 1, 0); }
-  @inline static down(): Vec3 { return new Vec3(0, -1, 0); }
-  @inline static left(): Vec3 { return new Vec3(-1, 0, 0); }
-  @inline static right(): Vec3 { return new Vec3(1, 0, 0); }
-  @inline static forward(): Vec3 { return new Vec3(0, 0, 1); }
-  @inline static back(): Vec3 { return new Vec3(0, 0, -1); }
+  static zero(): Vec3 { return new Vec3(0, 0, 0); }
+  static one(): Vec3 { return new Vec3(1, 1, 1); }
+  static up(): Vec3 { return new Vec3(0, 1, 0); }
+  static down(): Vec3 { return new Vec3(0, -1, 0); }
+  static left(): Vec3 { return new Vec3(-1, 0, 0); }
+  static right(): Vec3 { return new Vec3(1, 0, 0); }
+  static forward(): Vec3 { return new Vec3(0, 0, 1); }
+  static back(): Vec3 { return new Vec3(0, 0, -1); }
 
-  @inline
-  set(x: f64, y: f64, z: f64): this {
+  set(x: number, y: number, z: number): this {
     this.x = x;
     this.y = y;
     this.z = z;
     return this;
   }
 
-  @inline
   copy(v: Vec3): this {
     this.x = v.x;
     this.y = v.y;
@@ -36,12 +34,10 @@ export class Vec3 {
     return this;
   }
 
-  @inline
   clone(): Vec3 {
     return new Vec3(this.x, this.y, this.z);
   }
 
-  @inline
   add(v: Vec3): this {
     this.x += v.x;
     this.y += v.y;
@@ -49,23 +45,20 @@ export class Vec3 {
     return this;
   }
 
-  @inline
-  addScalar(s: f64): this {
+  addScalar(s: number): this {
     this.x += s;
     this.y += s;
     this.z += s;
     return this;
   }
 
-  @inline
-  addScaled(v: Vec3, scale: f64): this {
+  addScaled(v: Vec3, scale: number): this {
     this.x += v.x * scale;
     this.y += v.y * scale;
     this.z += v.z * scale;
     return this;
   }
 
-  @inline
   sub(v: Vec3): this {
     this.x -= v.x;
     this.y -= v.y;
@@ -73,15 +66,13 @@ export class Vec3 {
     return this;
   }
 
-  @inline
-  subScalar(s: f64): this {
+  subScalar(s: number): this {
     this.x -= s;
     this.y -= s;
     this.z -= s;
     return this;
   }
 
-  @inline
   mul(v: Vec3): this {
     this.x *= v.x;
     this.y *= v.y;
@@ -89,15 +80,13 @@ export class Vec3 {
     return this;
   }
 
-  @inline
-  mulScalar(s: f64): this {
+  mulScalar(s: number): this {
     this.x *= s;
     this.y *= s;
     this.z *= s;
     return this;
   }
 
-  @inline
   div(v: Vec3): this {
     this.x /= v.x;
     this.y /= v.y;
@@ -105,16 +94,14 @@ export class Vec3 {
     return this;
   }
 
-  @inline
-  divScalar(s: f64): this {
-    const inv: f64 = 1.0 / s;
+  divScalar(s: number): this {
+    const inv: number = 1.0 / s;
     this.x *= inv;
     this.y *= inv;
     this.z *= inv;
     return this;
   }
 
-  @inline
   negate(): this {
     this.x = -this.x;
     this.y = -this.y;
@@ -122,7 +109,6 @@ export class Vec3 {
     return this;
   }
 
-  @inline
   abs(): this {
     if (this.x < 0) this.x = -this.x;
     if (this.y < 0) this.y = -this.y;
@@ -130,7 +116,6 @@ export class Vec3 {
     return this;
   }
 
-  @inline
   floor(): this {
     this.x = Math.floor(this.x);
     this.y = Math.floor(this.y);
@@ -138,7 +123,6 @@ export class Vec3 {
     return this;
   }
 
-  @inline
   ceil(): this {
     this.x = Math.ceil(this.x);
     this.y = Math.ceil(this.y);
@@ -146,7 +130,6 @@ export class Vec3 {
     return this;
   }
 
-  @inline
   round(): this {
     this.x = Math.round(this.x);
     this.y = Math.round(this.y);
@@ -154,7 +137,6 @@ export class Vec3 {
     return this;
   }
 
-  @inline
   min(v: Vec3): this {
     if (v.x < this.x) this.x = v.x;
     if (v.y < this.y) this.y = v.y;
@@ -162,7 +144,6 @@ export class Vec3 {
     return this;
   }
 
-  @inline
   max(v: Vec3): this {
     if (v.x > this.x) this.x = v.x;
     if (v.y > this.y) this.y = v.y;
@@ -181,9 +162,9 @@ export class Vec3 {
   }
 
   normalize(): this {
-    const len: f64 = this.length();
+    const len: number = this.length();
     if (len > EPSILON) {
-      const invLen: f64 = 1.0 / len;
+      const invLen: number = 1.0 / len;
       this.x *= invLen;
       this.y *= invLen;
       this.z *= invLen;
@@ -191,20 +172,20 @@ export class Vec3 {
     return this;
   }
 
-  setLength(length: f64): this {
+  setLength(length: number): this {
     return this.normalize().mulScalar(length);
   }
 
-  clampLength(minLen: f64, maxLen: f64): this {
-    const len: f64 = this.length();
+  clampLength(minLen: number, maxLen: number): this {
+    const len: number = this.length();
     if (len < EPSILON) return this;
-    let clampedLen: f64 = len;
+    let clampedLen: number = len;
     if (clampedLen < minLen) clampedLen = minLen;
     else if (clampedLen > maxLen) clampedLen = maxLen;
     return this.mulScalar(clampedLen / len);
   }
 
-  lerp(v: Vec3, t: f64): this {
+  lerp(v: Vec3, t: number): this {
     this.x += (v.x - this.x) * t;
     this.y += (v.y - this.y) * t;
     this.z += (v.z - this.z) * t;
@@ -212,8 +193,8 @@ export class Vec3 {
   }
 
   crossVectors(a: Vec3, b: Vec3): this {
-    const ax: f64 = a.x, ay: f64 = a.y, az: f64 = a.z;
-    const bx: f64 = b.x, by: f64 = b.y, bz: f64 = b.z;
+    const ax: number = a.x, ay: number = a.y, az: number = a.z;
+    const bx: number = b.x, by: number = b.y, bz: number = b.z;
     this.x = ay * bz - az * by;
     this.y = az * bx - ax * bz;
     this.z = ax * by - ay * bx;
@@ -225,7 +206,7 @@ export class Vec3 {
   }
 
   reflect(normal: Vec3): this {
-    const d: f64 = 2.0 * this.dot(normal);
+    const d: number = 2.0 * this.dot(normal);
     this.x -= normal.x * d;
     this.y -= normal.y * d;
     this.z -= normal.z * d;
@@ -233,14 +214,14 @@ export class Vec3 {
   }
 
   project(v: Vec3): this {
-    const len2: f64 = v.lengthSq();
+    const len2: number = v.lengthSq();
     if (len2 < EPSILON) {
       this.x = 0;
       this.y = 0;
       this.z = 0;
       return this;
     }
-    const scalar: f64 = this.dot(v) / len2;
+    const scalar: number = this.dot(v) / len2;
     this.x = v.x * scalar;
     this.y = v.y * scalar;
     this.z = v.z * scalar;
@@ -248,85 +229,80 @@ export class Vec3 {
   }
 
   projectOnPlane(planeNormal: Vec3): this {
-    const d: f64 = this.dot(planeNormal);
+    const d: number = this.dot(planeNormal);
     this.x -= planeNormal.x * d;
     this.y -= planeNormal.y * d;
     this.z -= planeNormal.z * d;
     return this;
   }
 
-  @inline
-  dot(v: Vec3): f64 {
+  dot(v: Vec3): number {
     return this.x * v.x + this.y * v.y + this.z * v.z;
   }
 
-  @inline
-  lengthSq(): f64 {
+  lengthSq(): number {
     return this.x * this.x + this.y * this.y + this.z * this.z;
   }
 
-  @inline
-  length(): f64 {
+  length(): number {
     return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);
   }
 
-  @inline
-  manhattanLength(): f64 {
-    let ax: f64 = this.x; if (ax < 0) ax = -ax;
-    let ay: f64 = this.y; if (ay < 0) ay = -ay;
-    let az: f64 = this.z; if (az < 0) az = -az;
+  manhattanLength(): number {
+    let ax: number = this.x; if (ax < 0) ax = -ax;
+    let ay: number = this.y; if (ay < 0) ay = -ay;
+    let az: number = this.z; if (az < 0) az = -az;
     return ax + ay + az;
   }
 
-  distanceTo(v: Vec3): f64 {
-    const dx: f64 = this.x - v.x;
-    const dy: f64 = this.y - v.y;
-    const dz: f64 = this.z - v.z;
+  distanceTo(v: Vec3): number {
+    const dx: number = this.x - v.x;
+    const dy: number = this.y - v.y;
+    const dz: number = this.z - v.z;
     return Math.sqrt(dx * dx + dy * dy + dz * dz);
   }
 
-  @inline
-  distanceToSq(v: Vec3): f64 {
-    const dx: f64 = this.x - v.x;
-    const dy: f64 = this.y - v.y;
-    const dz: f64 = this.z - v.z;
+  distanceToSq(v: Vec3): number {
+    const dx: number = this.x - v.x;
+    const dy: number = this.y - v.y;
+    const dz: number = this.z - v.z;
     return dx * dx + dy * dy + dz * dz;
   }
 
-  manhattanDistanceTo(v: Vec3): f64 {
-    let dx: f64 = this.x - v.x; if (dx < 0) dx = -dx;
-    let dy: f64 = this.y - v.y; if (dy < 0) dy = -dy;
-    let dz: f64 = this.z - v.z; if (dz < 0) dz = -dz;
+  manhattanDistanceTo(v: Vec3): number {
+    let dx: number = this.x - v.x; if (dx < 0) dx = -dx;
+    let dy: number = this.y - v.y; if (dy < 0) dy = -dy;
+    let dz: number = this.z - v.z; if (dz < 0) dz = -dz;
     return dx + dy + dz;
   }
 
-  angleTo(v: Vec3): f64 {
-    const denominator: f64 = Math.sqrt(this.lengthSq() * v.lengthSq());
+  angleTo(v: Vec3): number {
+    const denominator: number = Math.sqrt(this.lengthSq() * v.lengthSq());
     if (denominator == 0.0) return 1.5707963267948966; // HALF_PI
-    let theta: f64 = this.dot(v) / denominator;
+    let theta: number = this.dot(v) / denominator;
     if (theta < -1.0) theta = -1.0;
     else if (theta > 1.0) theta = 1.0;
     return Math.acos(theta);
   }
 
-  isZero(epsilon: f64 = EPSILON): bool {
-    let ax: f64 = this.x; if (ax < 0) ax = -ax;
-    let ay: f64 = this.y; if (ay < 0) ay = -ay;
-    let az: f64 = this.z; if (az < 0) az = -az;
+  isZero(epsilon: number = EPSILON): boolean {
+    let ax: number = this.x; if (ax < 0) ax = -ax;
+    let ay: number = this.y; if (ay < 0) ay = -ay;
+    let az: number = this.z; if (az < 0) az = -az;
     return ax <= epsilon && ay <= epsilon && az <= epsilon;
   }
 
-  isFinite(): bool {
+  isFinite(): boolean {
     return isFinite(this.x) && isFinite(this.y) && isFinite(this.z);
   }
 
-  equals(v: Vec3, epsilon: f64 = EPSILON): bool {
+  equals(v: Vec3, epsilon: number = EPSILON): boolean {
     return approxEqual(this.x, v.x, epsilon) &&
            approxEqual(this.y, v.y, epsilon) &&
            approxEqual(this.z, v.z, epsilon);
   }
 
-  exactEquals(v: Vec3): bool {
+  exactEquals(v: Vec3): boolean {
     return this.x == v.x && this.y == v.y && this.z == v.z;
   }
 
@@ -362,7 +338,7 @@ export class Vec3 {
     return out;
   }
 
-  static scale(v: Vec3, s: f64, out: Vec3 | null = null): Vec3 {
+  static scale(v: Vec3, s: number, out: Vec3 | null = null): Vec3 {
     if (out === null) out = new Vec3();
     out.x = v.x * s;
     out.y = v.y * s;
@@ -380,9 +356,9 @@ export class Vec3 {
 
   static normalize(v: Vec3, out: Vec3 | null = null): Vec3 {
     if (out === null) out = new Vec3();
-    const len: f64 = Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+    const len: number = Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
     if (len > EPSILON) {
-      const invLen: f64 = 1.0 / len;
+      const invLen: number = 1.0 / len;
       out.x = v.x * invLen;
       out.y = v.y * invLen;
       out.z = v.z * invLen;
@@ -394,7 +370,7 @@ export class Vec3 {
     return out;
   }
 
-  static lerp(a: Vec3, b: Vec3, t: f64, out: Vec3 | null = null): Vec3 {
+  static lerp(a: Vec3, b: Vec3, t: number, out: Vec3 | null = null): Vec3 {
     if (out === null) out = new Vec3();
     out.x = a.x + (b.x - a.x) * t;
     out.y = a.y + (b.y - a.y) * t;
@@ -404,31 +380,29 @@ export class Vec3 {
 
   static cross(a: Vec3, b: Vec3, out: Vec3 | null = null): Vec3 {
     if (out === null) out = new Vec3();
-    const ax: f64 = a.x, ay: f64 = a.y, az: f64 = a.z;
-    const bx: f64 = b.x, by: f64 = b.y, bz: f64 = b.z;
+    const ax: number = a.x, ay: number = a.y, az: number = a.z;
+    const bx: number = b.x, by: number = b.y, bz: number = b.z;
     out.x = ay * bz - az * by;
     out.y = az * bx - ax * bz;
     out.z = ax * by - ay * bx;
     return out;
   }
 
-  @inline
-  static dot(a: Vec3, b: Vec3): f64 {
+  static dot(a: Vec3, b: Vec3): number {
     return a.x * b.x + a.y * b.y + a.z * b.z;
   }
 
-  static distance(a: Vec3, b: Vec3): f64 {
-    const dx: f64 = a.x - b.x;
-    const dy: f64 = a.y - b.y;
-    const dz: f64 = a.z - b.z;
+  static distance(a: Vec3, b: Vec3): number {
+    const dx: number = a.x - b.x;
+    const dy: number = a.y - b.y;
+    const dz: number = a.z - b.z;
     return Math.sqrt(dx * dx + dy * dy + dz * dz);
   }
 
-  @inline
-  static distanceSq(a: Vec3, b: Vec3): f64 {
-    const dx: f64 = a.x - b.x;
-    const dy: f64 = a.y - b.y;
-    const dz: f64 = a.z - b.z;
+  static distanceSq(a: Vec3, b: Vec3): number {
+    const dx: number = a.x - b.x;
+    const dy: number = a.y - b.y;
+    const dz: number = a.z - b.z;
     return dx * dx + dy * dy + dz * dz;
   }
 
@@ -450,7 +424,7 @@ export class Vec3 {
 
   static reflect(v: Vec3, n: Vec3, out: Vec3 | null = null): Vec3 {
     if (out === null) out = new Vec3();
-    const d: f64 = 2.0 * (v.x * n.x + v.y * n.y + v.z * n.z);
+    const d: number = 2.0 * (v.x * n.x + v.y * n.y + v.z * n.z);
     out.x = v.x - n.x * d;
     out.y = v.y - n.y * d;
     out.z = v.z - n.z * d;

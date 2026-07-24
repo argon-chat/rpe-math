@@ -15,7 +15,7 @@ export class AABB {
     return new AABB();
   }
 
-  static fromMinMax(minX: f64, minY: f64, minZ: f64, maxX: f64, maxY: f64, maxZ: f64): AABB {
+  static fromMinMax(minX: number, minY: number, minZ: number, maxX: number, maxY: number, maxZ: number): AABB {
     const aabb = new AABB();
     aabb.min.set(minX, minY, minZ);
     aabb.max.set(maxX, maxY, maxZ);
@@ -29,7 +29,7 @@ export class AABB {
     return aabb;
   }
 
-  static fromCenterExtents(cx: f64, cy: f64, cz: f64, ex: f64, ey: f64, ez: f64): AABB {
+  static fromCenterExtents(cx: number, cy: number, cz: number, ex: number, ey: number, ez: number): AABB {
     const aabb = new AABB();
     aabb.min.set(cx - ex, cy - ey, cz - ez);
     aabb.max.set(cx + ex, cy + ey, cz + ez);
@@ -49,7 +49,7 @@ export class AABB {
     return this;
   }
 
-  set(minX: f64, minY: f64, minZ: f64, maxX: f64, maxY: f64, maxZ: f64): this {
+  set(minX: number, minY: number, minZ: number, maxX: number, maxY: number, maxZ: number): this {
     this.min.set(minX, minY, minZ);
     this.max.set(maxX, maxY, maxZ);
     return this;
@@ -65,7 +65,7 @@ export class AABB {
     return new AABB().copy(this);
   }
 
-  expandByPoint(x: f64, y: f64, z: f64): this {
+  expandByPoint(x: number, y: number, z: number): this {
     if (x < this.min.x) this.min.x = x;
     if (y < this.min.y) this.min.y = y;
     if (z < this.min.z) this.min.z = z;
@@ -98,7 +98,7 @@ export class AABB {
     if (other.max.z < this.max.z) this.max.z = other.max.z;
     return this;
   }
-yScalar(s: f64): this {
+yScalar(s: number): this {
     this.min.x -= s;
     this.min.y -= s;
     this.min.z -= s;
@@ -108,7 +108,7 @@ yScalar(s: f64): this {
     return this;
   }
 
-  translate(x: f64, y: f64, z: f64): this {
+  translate(x: number, y: number, z: number): this {
     this.min.x += x;
     this.min.y += y;
     this.min.z += z;
@@ -122,13 +122,13 @@ yScalar(s: f64): this {
     return this.translate(v.x, v.y, v.z);
   }
 
-  setFromCenterExtents(cx: f64, cy: f64, cz: f64, ex: f64, ey: f64, ez: f64): this {
+  setFromCenterExtents(cx: number, cy: number, cz: number, ex: number, ey: number, ez: number): this {
     this.min.set(cx - ex, cy - ey, cz - ez);
     this.max.set(cx + ex, cy + ey, cz + ez);
     return this;
   }
 
-  isEmpty(): bool {
+  isEmpty(): boolean {
     return this.max.x < this.min.x || this.max.y < this.min.y || this.max.z < this.min.z;
   }
 
@@ -156,46 +156,46 @@ yScalar(s: f64): this {
     return out;
   }
 
-  getVolume(): f64 {
+  getVolume(): number {
     const sx = this.max.x - this.min.x;
     const sy = this.max.y - this.min.y;
     const sz = this.max.z - this.min.z;
     return sx * sy * sz;
   }
 
-  getSurfaceArea(): f64 {
+  getSurfaceArea(): number {
     const sx = this.max.x - this.min.x;
     const sy = this.max.y - this.min.y;
     const sz = this.max.z - this.min.z;
     return 2.0 * (sx * sy + sy * sz + sz * sx);
   }
 
-  containsPoint(x: f64, y: f64, z: f64): bool {
+  containsPoint(x: number, y: number, z: number): boolean {
     return x >= this.min.x && x <= this.max.x &&
            y >= this.min.y && y <= this.max.y &&
            z >= this.min.z && z <= this.max.z;
   }
 
-  containsPointVec(p: Vec3): bool {
+  containsPointVec(p: Vec3): boolean {
     return this.containsPoint(p.x, p.y, p.z);
   }
 
-  containsAABB(other: AABB): bool {
+  containsAABB(other: AABB): boolean {
     return other.min.x >= this.min.x && other.max.x <= this.max.x &&
            other.min.y >= this.min.y && other.max.y <= this.max.y &&
            other.min.z >= this.min.z && other.max.z <= this.max.z;
   }
 
-  intersectsAABB(other: AABB): bool {
+  intersectsAABB(other: AABB): boolean {
     return this.max.x >= other.min.x && this.min.x <= other.max.x &&
            this.max.y >= other.min.y && this.min.y <= other.max.y &&
            this.max.z >= other.min.z && this.min.z <= other.max.z;
   }
 
-  distanceToPoint(x: f64, y: f64, z: f64): f64 {
-    let dx: f64 = 0;
-    let dy: f64 = 0;
-    let dz: f64 = 0;
+  distanceToPoint(x: number, y: number, z: number): number {
+    let dx: number = 0;
+    let dy: number = 0;
+    let dz: number = 0;
 
     if (x < this.min.x) dx = this.min.x - x;
     else if (x > this.max.x) dx = x - this.max.x;
@@ -209,14 +209,14 @@ yScalar(s: f64): this {
     return Math.sqrt(dx * dx + dy * dy + dz * dz);
   }
 
-  distanceToPointVec(p: Vec3): f64 {
+  distanceToPointVec(p: Vec3): number {
     return this.distanceToPoint(p.x, p.y, p.z);
   }
 
-  distanceToPointSq(x: f64, y: f64, z: f64): f64 {
-    let dx: f64 = 0;
-    let dy: f64 = 0;
-    let dz: f64 = 0;
+  distanceToPointSq(x: number, y: number, z: number): number {
+    let dx: number = 0;
+    let dy: number = 0;
+    let dz: number = 0;
 
     if (x < this.min.x) dx = this.min.x - x;
     else if (x > this.max.x) dx = x - this.max.x;
@@ -230,7 +230,7 @@ yScalar(s: f64): this {
     return dx * dx + dy * dy + dz * dz;
   }
 
-  clampPoint(x: f64, y: f64, z: f64, out: Vec3 | null = null): Vec3 {
+  clampPoint(x: number, y: number, z: number, out: Vec3 | null = null): Vec3 {
     if (out === null) out = new Vec3();
     out.x = x < this.min.x ? this.min.x : (x > this.max.x ? this.max.x : x);
     out.y = y < this.min.y ? this.min.y : (y > this.max.y ? this.max.y : y);
@@ -242,7 +242,7 @@ yScalar(s: f64): this {
     return this.clampPoint(p.x, p.y, p.z, out);
   }
 
-  equals(other: AABB, epsilon: f64 = EPSILON): bool {
+  equals(other: AABB, epsilon: number = EPSILON): boolean {
     return this.min.equals(other.min, epsilon) && this.max.equals(other.max, epsilon);
   }
 

@@ -1,22 +1,20 @@
 # @engine/math
 
-Isomorphic math library for Red Pew Engine.
+Math library for Red Pew Engine.
 
 ## Overview
 
-High-performance math library designed to work identically in TypeScript and AssemblyScript environments. 
+High-performance TypeScript math library.
 Provides vectors, matrices, quaternions, and geometric primitives optimized for game development.
 
 ## Features
 
-- **Isomorphic**: Same API for TypeScript and AssemblyScript
 - **Zero Allocation**: Mutating operations to avoid GC pressure
 - **SIMD Ready**: Structure compatible with SIMD optimizations
 - **Full Test Coverage**: Comprehensive tests for all operations
-- **Inline Optimization**: `@inline` decorators for AS compilation
 
 ```typescript
-import { Vec2, Vec3, Vec4, Mat4, Quat, Transform, AABB, Ray } from '@engine/math';
+import { Vec2, Vec3, Vec4, Mat4, Quat, AABB, Ray } from '@engine/math';
 
 // Vectors
 const pos = Vec3.create(1, 2, 3);
@@ -32,11 +30,6 @@ Mat4.scale(model, model, Vec3.create(2, 2, 2));
 // Quaternions
 const rotation = Quat.fromEuler(Quat.create(), 0, 45, 0);
 const forward = Vec3.transformQuat(Vec3.create(), Vec3.FORWARD, rotation);
-
-// Transforms (position + rotation + scale)
-const transform = Transform.create();
-Transform.setPosition(transform, 10, 0, 5);
-Transform.setRotationEuler(transform, 0, 90, 0);
 
 // Geometry
 const box = AABB.create(Vec3.create(-1, -1, -1), Vec3.create(1, 1, 1));
@@ -203,35 +196,6 @@ Quat.toAxisAngle(outAxis: Vec3, q: Quat): number
 Quat.rotateX(out: Quat, a: Quat, rad: number): Quat
 Quat.rotateY(out: Quat, a: Quat, rad: number): Quat
 Quat.rotateZ(out: Quat, a: Quat, rad: number): Quat
-```
-
-### Transform
-
-Combined position, rotation, scale.
-
-```typescript
-// Creation
-Transform.create(): Transform
-Transform.clone(t: Transform): Transform
-
-// Setters
-Transform.setPosition(t: Transform, x: number, y: number, z: number): void
-Transform.setRotation(t: Transform, q: Quat): void
-Transform.setRotationEuler(t: Transform, x: number, y: number, z: number): void
-Transform.setScale(t: Transform, x: number, y: number, z: number): void
-
-// Getters
-Transform.getPosition(out: Vec3, t: Transform): Vec3
-Transform.getRotation(out: Quat, t: Transform): Quat
-Transform.getScale(out: Vec3, t: Transform): Vec3
-
-// Matrix
-Transform.getMatrix(out: Mat4, t: Transform): Mat4
-Transform.getInverseMatrix(out: Mat4, t: Transform): Mat4
-
-// Hierarchy
-Transform.localToWorld(out: Vec3, point: Vec3, t: Transform): Vec3
-Transform.worldToLocal(out: Vec3, point: Vec3, t: Transform): Vec3
 ```
 
 ### AABB

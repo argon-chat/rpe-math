@@ -1,8 +1,3 @@
-import './polyfills';
-
-export { i32_cast, f32_cast, f64_cast } from './types';
-export { i8_clamp, u8_clamp, i16_clamp, u16_clamp, i32_clamp, u32_clamp } from './types';
-
 export {
   EPSILON,
   PI, TWO_PI, HALF_PI, QUARTER_PI,
@@ -22,8 +17,6 @@ export { Vec4 } from './Vec4';
 
 export { Mat4 } from './Mat4';
 export { Quat } from './Quat';
-
-export { Transform } from './Transform';
 
 export { AABB } from './AABB';
 export { Ray } from './Ray';

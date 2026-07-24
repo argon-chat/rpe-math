@@ -11,13 +11,13 @@ import { Vec4 } from './Vec4';
  */
 export class Mat4 {
   // Column 0
-  m00: f64; m01: f64; m02: f64; m03: f64;
+  m00: number; m01: number; m02: number; m03: number;
   // Column 1
-  m04: f64; m05: f64; m06: f64; m07: f64;
+  m04: number; m05: number; m06: number; m07: number;
   // Column 2
-  m08: f64; m09: f64; m10: f64; m11: f64;
+  m08: number; m09: number; m10: number; m11: number;
   // Column 3
-  m12: f64; m13: f64; m14: f64; m15: f64;
+  m12: number; m13: number; m14: number; m15: number;
 
   constructor() {
     // Identity by default
@@ -38,10 +38,10 @@ export class Mat4 {
   }
 
   static fromValues(
-    m00: f64, m01: f64, m02: f64, m03: f64,
-    m04: f64, m05: f64, m06: f64, m07: f64,
-    m08: f64, m09: f64, m10: f64, m11: f64,
-    m12: f64, m13: f64, m14: f64, m15: f64
+    m00: number, m01: number, m02: number, m03: number,
+    m04: number, m05: number, m06: number, m07: number,
+    m08: number, m09: number, m10: number, m11: number,
+    m12: number, m13: number, m14: number, m15: number
   ): Mat4 {
     const m = new Mat4();
     m.m00 = m00; m.m01 = m01; m.m02 = m02; m.m03 = m03;
@@ -51,7 +51,6 @@ export class Mat4 {
     return m;
   }
 
-  @inline
   setIdentity(): this {
     this.m00 = 1; this.m01 = 0; this.m02 = 0; this.m03 = 0;
     this.m04 = 0; this.m05 = 1; this.m06 = 0; this.m07 = 0;
@@ -60,7 +59,6 @@ export class Mat4 {
     return this;
   }
 
-  @inline
   copy(src: Mat4): this {
     this.m00 = src.m00; this.m01 = src.m01; this.m02 = src.m02; this.m03 = src.m03;
     this.m04 = src.m04; this.m05 = src.m05; this.m06 = src.m06; this.m07 = src.m07;
@@ -69,7 +67,6 @@ export class Mat4 {
     return this;
   }
 
-  @inline
   clone(): Mat4 {
     return new Mat4().copy(this);
   }
@@ -112,7 +109,7 @@ export class Mat4 {
     return this.copy(temp);
   }
 
-  translate(x: f64, y: f64, z: f64): this {
+  translate(x: number, y: number, z: number): this {
     this.m12 += this.m00 * x + this.m04 * y + this.m08 * z;
     this.m13 += this.m01 * x + this.m05 * y + this.m09 * z;
     this.m14 += this.m02 * x + this.m06 * y + this.m10 * z;
@@ -124,7 +121,7 @@ export class Mat4 {
     return this.translate(v.x, v.y, v.z);
   }
 
-  scale(x: f64, y: f64, z: f64): this {
+  scale(x: number, y: number, z: number): this {
     this.m00 *= x; this.m01 *= x; this.m02 *= x; this.m03 *= x;
     this.m04 *= y; this.m05 *= y; this.m06 *= y; this.m07 *= y;
     this.m08 *= z; this.m09 *= z; this.m10 *= z; this.m11 *= z;
@@ -135,13 +132,13 @@ export class Mat4 {
     return this.scale(v.x, v.y, v.z);
   }
 
-  scaleScalar(s: f64): this {
+  scaleScalar(s: number): this {
     return this.scale(s, s, s);
   }
 
-  rotateX(radians: f64): this {
-    const c: f64 = Math.cos(radians);
-    const s: f64 = Math.sin(radians);
+  rotateX(radians: number): this {
+    const c: number = Math.cos(radians);
+    const s: number = Math.sin(radians);
 
     const a10 = this.m04, a11 = this.m05, a12 = this.m06, a13 = this.m07;
     const a20 = this.m08, a21 = this.m09, a22 = this.m10, a23 = this.m11;
@@ -158,9 +155,9 @@ export class Mat4 {
     return this;
   }
 
-  rotateY(radians: f64): this {
-    const c: f64 = Math.cos(radians);
-    const s: f64 = Math.sin(radians);
+  rotateY(radians: number): this {
+    const c: number = Math.cos(radians);
+    const s: number = Math.sin(radians);
 
     const a00 = this.m00, a01 = this.m01, a02 = this.m02, a03 = this.m03;
     const a20 = this.m08, a21 = this.m09, a22 = this.m10, a23 = this.m11;
@@ -177,9 +174,9 @@ export class Mat4 {
     return this;
   }
 
-  rotateZ(radians: f64): this {
-    const c: f64 = Math.cos(radians);
-    const s: f64 = Math.sin(radians);
+  rotateZ(radians: number): this {
+    const c: number = Math.cos(radians);
+    const s: number = Math.sin(radians);
 
     const a00 = this.m00, a01 = this.m01, a02 = this.m02, a03 = this.m03;
     const a10 = this.m04, a11 = this.m05, a12 = this.m06, a13 = this.m07;
@@ -196,18 +193,18 @@ export class Mat4 {
     return this;
   }
 
-  rotate(radians: f64, axisX: f64, axisY: f64, axisZ: f64): this {
-    let len: f64 = Math.sqrt(axisX * axisX + axisY * axisY + axisZ * axisZ);
+  rotate(radians: number, axisX: number, axisY: number, axisZ: number): this {
+    let len: number = Math.sqrt(axisX * axisX + axisY * axisY + axisZ * axisZ);
     if (len < EPSILON) return this;
 
     len = 1.0 / len;
-    const x: f64 = axisX * len;
-    const y: f64 = axisY * len;
-    const z: f64 = axisZ * len;
+    const x: number = axisX * len;
+    const y: number = axisY * len;
+    const z: number = axisZ * len;
 
-    const c: f64 = Math.cos(radians);
-    const s: f64 = Math.sin(radians);
-    const t: f64 = 1.0 - c;
+    const c: number = Math.cos(radians);
+    const s: number = Math.sin(radians);
+    const t: number = 1.0 - c;
 
     const r00 = x * x * t + c,     r01 = y * x * t + z * s, r02 = z * x * t - y * s;
     const r10 = x * y * t - z * s, r11 = y * y * t + c,     r12 = z * y * t + x * s;
@@ -234,7 +231,7 @@ export class Mat4 {
   }
 
   transpose(): this {
-    let t: f64;
+    let t: number;
     t = this.m01; this.m01 = this.m04; this.m04 = t;
     t = this.m02; this.m02 = this.m08; this.m08 = t;
     t = this.m03; this.m03 = this.m12; this.m12 = t;
@@ -291,7 +288,7 @@ export class Mat4 {
     return this;
   }
 
-  determinant(): f64 {
+  determinant(): number {
     const a00 = this.m00, a01 = this.m01, a02 = this.m02, a03 = this.m03;
     const a10 = this.m04, a11 = this.m05, a12 = this.m06, a13 = this.m07;
     const a20 = this.m08, a21 = this.m09, a22 = this.m10, a23 = this.m11;
@@ -329,7 +326,7 @@ export class Mat4 {
     return out;
   }
 
-  equals(m: Mat4, epsilon: f64 = EPSILON): bool {
+  equals(m: Mat4, epsilon: number = EPSILON): boolean {
     return approxEqual(this.m00, m.m00, epsilon) &&
            approxEqual(this.m01, m.m01, epsilon) &&
            approxEqual(this.m02, m.m02, epsilon) &&
@@ -351,7 +348,7 @@ export class Mat4 {
   transformVec3(v: Vec3, out: Vec3 | null = null): Vec3 {
     if (out === null) out = new Vec3();
     const x = v.x, y = v.y, z = v.z;
-    const w: f64 = 1.0 / (this.m03 * x + this.m07 * y + this.m11 * z + this.m15);
+    const w: number = 1.0 / (this.m03 * x + this.m07 * y + this.m11 * z + this.m15);
     out.x = (this.m00 * x + this.m04 * y + this.m08 * z + this.m12) * w;
     out.y = (this.m01 * x + this.m05 * y + this.m09 * z + this.m13) * w;
     out.z = (this.m02 * x + this.m06 * y + this.m10 * z + this.m14) * w;
@@ -421,11 +418,11 @@ export class Mat4 {
     return out;
   }
 
-  static perspective(fovY: f64, aspect: f64, near: f64, far: f64, out: Mat4 | null = null): Mat4 {
+  static perspective(fovY: number, aspect: number, near: number, far: number, out: Mat4 | null = null): Mat4 {
     if (out === null) out = new Mat4();
 
-    const f: f64 = 1.0 / Math.tan(fovY / 2.0);
-    const nf: f64 = 1.0 / (near - far);
+    const f: number = 1.0 / Math.tan(fovY / 2.0);
+    const nf: number = 1.0 / (near - far);
 
     out.m00 = f / aspect; out.m01 = 0; out.m02 = 0; out.m03 = 0;
     out.m04 = 0; out.m05 = f; out.m06 = 0; out.m07 = 0;
@@ -435,12 +432,12 @@ export class Mat4 {
     return out;
   }
 
-  static ortho(left: f64, right: f64, bottom: f64, top: f64, near: f64, far: f64, out: Mat4 | null = null): Mat4 {
+  static ortho(left: number, right: number, bottom: number, top: number, near: number, far: number, out: Mat4 | null = null): Mat4 {
     if (out === null) out = new Mat4();
 
-    const lr: f64 = 1.0 / (left - right);
-    const bt: f64 = 1.0 / (bottom - top);
-    const nf: f64 = 1.0 / (near - far);
+    const lr: number = 1.0 / (left - right);
+    const bt: number = 1.0 / (bottom - top);
+    const nf: number = 1.0 / (near - far);
 
     out.m00 = -2 * lr; out.m01 = 0; out.m02 = 0; out.m03 = 0;
     out.m04 = 0; out.m05 = -2 * bt; out.m06 = 0; out.m07 = 0;
@@ -461,7 +458,7 @@ export class Mat4 {
     let zy = eyey - targety;
     let zz = eyez - targetz;
 
-    let len: f64 = zx * zx + zy * zy + zz * zz;
+    let len: number = zx * zx + zy * zy + zz * zz;
     if (len > 0) {
       len = 1.0 / Math.sqrt(len);
       zx *= len; zy *= len; zz *= len;
@@ -492,7 +489,7 @@ export class Mat4 {
     return out;
   }
 
-  static fromTranslation(x: f64, y: f64, z: f64, out: Mat4 | null = null): Mat4 {
+  static fromTranslation(x: number, y: number, z: number, out: Mat4 | null = null): Mat4 {
     if (out === null) out = new Mat4();
     out.m00 = 1; out.m01 = 0; out.m02 = 0; out.m03 = 0;
     out.m04 = 0; out.m05 = 1; out.m06 = 0; out.m07 = 0;
@@ -501,7 +498,7 @@ export class Mat4 {
     return out;
   }
 
-  static fromScaling(x: f64, y: f64, z: f64, out: Mat4 | null = null): Mat4 {
+  static fromScaling(x: number, y: number, z: number, out: Mat4 | null = null): Mat4 {
     if (out === null) out = new Mat4();
     out.m00 = x; out.m01 = 0; out.m02 = 0; out.m03 = 0;
     out.m04 = 0; out.m05 = y; out.m06 = 0; out.m07 = 0;
@@ -510,7 +507,7 @@ export class Mat4 {
     return out;
   }
 
-  static fromRotationX(radians: f64, out: Mat4 | null = null): Mat4 {
+  static fromRotationX(radians: number, out: Mat4 | null = null): Mat4 {
     if (out === null) out = new Mat4();
     const c = Math.cos(radians);
     const s = Math.sin(radians);
@@ -521,7 +518,7 @@ export class Mat4 {
     return out;
   }
 
-  static fromRotationY(radians: f64, out: Mat4 | null = null): Mat4 {
+  static fromRotationY(radians: number, out: Mat4 | null = null): Mat4 {
     if (out === null) out = new Mat4();
     const c = Math.cos(radians);
     const s = Math.sin(radians);
@@ -532,7 +529,7 @@ export class Mat4 {
     return out;
   }
 
-  static fromRotationZ(radians: f64, out: Mat4 | null = null): Mat4 {
+  static fromRotationZ(radians: number, out: Mat4 | null = null): Mat4 {
     if (out === null) out = new Mat4();
     const c = Math.cos(radians);
     const s = Math.sin(radians);
@@ -548,23 +545,23 @@ export class Mat4 {
    * @param out - Target array (must have at least 16 elements)
    * @param offset - Starting index in output array (default: 0)
    */
-  toFloat32Array(out: Float32Array, offset: i32 = 0): Float32Array {
-    out[offset + 0] = <f32>this.m00;
-    out[offset + 1] = <f32>this.m01;
-    out[offset + 2] = <f32>this.m02;
-    out[offset + 3] = <f32>this.m03;
-    out[offset + 4] = <f32>this.m04;
-    out[offset + 5] = <f32>this.m05;
-    out[offset + 6] = <f32>this.m06;
-    out[offset + 7] = <f32>this.m07;
-    out[offset + 8] = <f32>this.m08;
-    out[offset + 9] = <f32>this.m09;
-    out[offset + 10] = <f32>this.m10;
-    out[offset + 11] = <f32>this.m11;
-    out[offset + 12] = <f32>this.m12;
-    out[offset + 13] = <f32>this.m13;
-    out[offset + 14] = <f32>this.m14;
-    out[offset + 15] = <f32>this.m15;
+  toFloat32Array(out: Float32Array, offset: number = 0): Float32Array {
+    out[offset + 0] = this.m00;
+    out[offset + 1] = this.m01;
+    out[offset + 2] = this.m02;
+    out[offset + 3] = this.m03;
+    out[offset + 4] = this.m04;
+    out[offset + 5] = this.m05;
+    out[offset + 6] = this.m06;
+    out[offset + 7] = this.m07;
+    out[offset + 8] = this.m08;
+    out[offset + 9] = this.m09;
+    out[offset + 10] = this.m10;
+    out[offset + 11] = this.m11;
+    out[offset + 12] = this.m12;
+    out[offset + 13] = this.m13;
+    out[offset + 14] = this.m14;
+    out[offset + 15] = this.m15;
     return out;
   }
   
@@ -573,7 +570,7 @@ export class Mat4 {
    * @param arr - Source array (must have at least 16 elements)
    * @param offset - Starting index in source array (default: 0)
    */
-  fromFloat32Array(arr: Float32Array, offset: i32 = 0): this {
+  fromFloat32Array(arr: Float32Array, offset: number = 0): this {
     this.m00 = arr[offset + 0];
     this.m01 = arr[offset + 1];
     this.m02 = arr[offset + 2];

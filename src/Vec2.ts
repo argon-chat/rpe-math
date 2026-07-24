@@ -10,151 +10,132 @@ export interface Vec2Mut {
   y: number;
 }
 export class Vec2 implements Vec2Mut {
-  x: f64;
-  y: f64;
+  x: number;
+  y: number;
 
-  constructor(x: f64 = 0, y: f64 = 0) {
+  constructor(x: number = 0, y: number = 0) {
     this.x = x;
     this.y = y;
   }
 
-  @inline static zero(): Vec2 { return new Vec2(0, 0); }
-  @inline static one(): Vec2 { return new Vec2(1, 1); }
-  @inline static up(): Vec2 { return new Vec2(0, 1); }
-  @inline static down(): Vec2 { return new Vec2(0, -1); }
-  @inline static left(): Vec2 { return new Vec2(-1, 0); }
-  @inline static right(): Vec2 { return new Vec2(1, 0); }
+  static zero(): Vec2 { return new Vec2(0, 0); }
+  static one(): Vec2 { return new Vec2(1, 1); }
+  static up(): Vec2 { return new Vec2(0, 1); }
+  static down(): Vec2 { return new Vec2(0, -1); }
+  static left(): Vec2 { return new Vec2(-1, 0); }
+  static right(): Vec2 { return new Vec2(1, 0); }
 
-  static fromAngle(radians: f64): Vec2 {
+  static fromAngle(radians: number): Vec2 {
     return new Vec2(Math.cos(radians), Math.sin(radians));
   }
 
-  @inline
-  set(x: f64, y: f64): this {
+  set(x: number, y: number): this {
     this.x = x;
     this.y = y;
     return this;
   }
 
-  @inline
   copy(v: Vec2): this {
     this.x = v.x;
     this.y = v.y;
     return this;
   }
 
-  @inline
   clone(): Vec2 {
     return new Vec2(this.x, this.y);
   }
 
-  @inline
   add(v: Vec2): this {
     this.x += v.x;
     this.y += v.y;
     return this;
   }
 
-  @inline
-  addScalar(s: f64): this {
+  addScalar(s: number): this {
     this.x += s;
     this.y += s;
     return this;
   }
 
-  @inline
-  addScaled(v: Vec2, scale: f64): this {
+  addScaled(v: Vec2, scale: number): this {
     this.x += v.x * scale;
     this.y += v.y * scale;
     return this;
   }
 
-  @inline
   sub(v: Vec2): this {
     this.x -= v.x;
     this.y -= v.y;
     return this;
   }
 
-  @inline
-  subScalar(s: f64): this {
+  subScalar(s: number): this {
     this.x -= s;
     this.y -= s;
     return this;
   }
 
-  @inline
   mul(v: Vec2): this {
     this.x *= v.x;
     this.y *= v.y;
     return this;
   }
 
-  @inline
-  mulScalar(s: f64): this {
+  mulScalar(s: number): this {
     this.x *= s;
     this.y *= s;
     return this;
   }
 
-  @inline
   div(v: Vec2): this {
     this.x /= v.x;
     this.y /= v.y;
     return this;
   }
 
-  @inline
-  divScalar(s: f64): this {
-    const inv: f64 = 1.0 / s;
+  divScalar(s: number): this {
+    const inv: number = 1.0 / s;
     this.x *= inv;
     this.y *= inv;
     return this;
   }
 
-  @inline
   negate(): this {
     this.x = -this.x;
     this.y = -this.y;
     return this;
   }
 
-  @inline
   abs(): this {
     this.x = this.x < 0 ? -this.x : this.x;
     this.y = this.y < 0 ? -this.y : this.y;
     return this;
   }
 
-  @inline
   floor(): this {
     this.x = Math.floor(this.x);
     this.y = Math.floor(this.y);
     return this;
   }
 
-  @inline
   ceil(): this {
     this.x = Math.ceil(this.x);
     this.y = Math.ceil(this.y);
     return this;
   }
 
-  @inline
   round(): this {
     this.x = Math.round(this.x);
     this.y = Math.round(this.y);
     return this;
   }
 
-  @inline
   min(v: Vec2): this {
     if (v.x < this.x) this.x = v.x;
     if (v.y < this.y) this.y = v.y;
     return this;
   }
 
-  @inline
   max(v: Vec2): this {
     if (v.x > this.x) this.x = v.x;
     if (v.y > this.y) this.y = v.y;
@@ -170,139 +151,132 @@ export class Vec2 implements Vec2Mut {
   }
 
   normalize(): this {
-    const len: f64 = this.length();
+    const len: number = this.length();
     if (len > EPSILON) {
-      const invLen: f64 = 1.0 / len;
+      const invLen: number = 1.0 / len;
       this.x *= invLen;
       this.y *= invLen;
     }
     return this;
   }
 
-  setLength(length: f64): this {
+  setLength(length: number): this {
     return this.normalize().mulScalar(length);
   }
 
-  clampLength(minLen: f64, maxLen: f64): this {
-    const len: f64 = this.length();
+  clampLength(minLen: number, maxLen: number): this {
+    const len: number = this.length();
     if (len < EPSILON) return this;
-    let clampedLen: f64 = len;
+    let clampedLen: number = len;
     if (clampedLen < minLen) clampedLen = minLen;
     else if (clampedLen > maxLen) clampedLen = maxLen;
     return this.mulScalar(clampedLen / len);
   }
 
-  lerp(v: Vec2, t: f64): this {
+  lerp(v: Vec2, t: number): this {
     this.x += (v.x - this.x) * t;
     this.y += (v.y - this.y) * t;
     return this;
   }
 
-  rotate(radians: f64): this {
-    const cos: f64 = Math.cos(radians);
-    const sin: f64 = Math.sin(radians);
-    const x: f64 = this.x;
-    const y: f64 = this.y;
+  rotate(radians: number): this {
+    const cos: number = Math.cos(radians);
+    const sin: number = Math.sin(radians);
+    const x: number = this.x;
+    const y: number = this.y;
     this.x = x * cos - y * sin;
     this.y = x * sin + y * cos;
     return this;
   }
 
   perpendicular(): this {
-    const x: f64 = this.x;
+    const x: number = this.x;
     this.x = -this.y;
     this.y = x;
     return this;
   }
 
   reflect(normal: Vec2): this {
-    const d: f64 = 2.0 * this.dot(normal);
+    const d: number = 2.0 * this.dot(normal);
     this.x -= normal.x * d;
     this.y -= normal.y * d;
     return this;
   }
 
-  @inline
-  dot(v: Vec2): f64 {
+  dot(v: Vec2): number {
     return this.x * v.x + this.y * v.y;
   }
 
-  @inline
-  cross(v: Vec2): f64 {
+  cross(v: Vec2): number {
     return this.x * v.y - this.y * v.x;
   }
 
-  @inline
-  lengthSq(): f64 {
+  lengthSq(): number {
     return this.x * this.x + this.y * this.y;
   }
 
-  @inline
-  length(): f64 {
+  length(): number {
     return Math.sqrt(this.x * this.x + this.y * this.y);
   }
 
-  @inline
-  manhattanLength(): f64 {
-    const ax: f64 = this.x < 0 ? -this.x : this.x;
-    const ay: f64 = this.y < 0 ? -this.y : this.y;
+  manhattanLength(): number {
+    const ax: number = this.x < 0 ? -this.x : this.x;
+    const ay: number = this.y < 0 ? -this.y : this.y;
     return ax + ay;
   }
 
-  distanceTo(v: Vec2): f64 {
-    const dx: f64 = this.x - v.x;
-    const dy: f64 = this.y - v.y;
+  distanceTo(v: Vec2): number {
+    const dx: number = this.x - v.x;
+    const dy: number = this.y - v.y;
     return Math.sqrt(dx * dx + dy * dy);
   }
 
-  @inline
-  distanceToSq(v: Vec2): f64 {
-    const dx: f64 = this.x - v.x;
-    const dy: f64 = this.y - v.y;
+  distanceToSq(v: Vec2): number {
+    const dx: number = this.x - v.x;
+    const dy: number = this.y - v.y;
     return dx * dx + dy * dy;
   }
 
-  manhattanDistanceTo(v: Vec2): f64 {
-    let dx: f64 = this.x - v.x;
-    let dy: f64 = this.y - v.y;
+  manhattanDistanceTo(v: Vec2): number {
+    let dx: number = this.x - v.x;
+    let dy: number = this.y - v.y;
     if (dx < 0) dx = -dx;
     if (dy < 0) dy = -dy;
     return dx + dy;
   }
 
-  @inline
-  angle(): f64 {
+  angle(): number {
     return Math.atan2(this.y, this.x);
   }
 
-  angleTo(v: Vec2): f64 {
-    const denominator: f64 = Math.sqrt(this.lengthSq() * (v.x * v.x + v.y * v.y));
+  angleTo(v: Vec2): number {
+    const denominator: number = Math.sqrt(this.lengthSq() * (v.x * v.x + v.y * v.y));
     if (denominator == 0.0) return 1.5707963267948966; // HALF_PI
-    let theta: f64 = this.dot(v) / denominator;
+    let theta: number = this.dot(v) / denominator;
     if (theta < -1.0) theta = -1.0;
     else if (theta > 1.0) theta = 1.0;
     return Math.acos(theta);
   }
 
-  signedAngleTo(v: Vec2): f64 {
+  signedAngleTo(v: Vec2): number {
     return Math.atan2(this.cross(v), this.dot(v));
   }
 
-  isZero(epsilon: f64 = EPSILON): bool {
-    const ax: f64 = this.x < 0 ? -this.x : this.x;
-    const ay: f64 = this.y < 0 ? -this.y : this.y;
+  isZero(epsilon: number = EPSILON): boolean {
+    const ax: number = this.x < 0 ? -this.x : this.x;
+    const ay: number = this.y < 0 ? -this.y : this.y;
     return ax <= epsilon && ay <= epsilon;
   }
 
-  isFinite(): bool {
+  isFinite(): boolean {
     return isFinite(this.x) && isFinite(this.y);
   }
 
-  equals(v: Vec2, epsilon: f64 = EPSILON): bool {
+  equals(v: Vec2, epsilon: number = EPSILON): boolean {
     return approxEqual(this.x, v.x, epsilon) && approxEqual(this.y, v.y, epsilon);
   }
 
-  exactEquals(v: Vec2): bool {
+  exactEquals(v: Vec2): boolean {
     return this.x == v.x && this.y == v.y;
   }
 
@@ -334,7 +308,7 @@ export class Vec2 implements Vec2Mut {
     return out;
   }
 
-  static scale(v: Vec2, s: f64, out: Vec2 | null = null): Vec2 {
+  static scale(v: Vec2, s: number, out: Vec2 | null = null): Vec2 {
     if (out === null) out = new Vec2();
     out.x = v.x * s;
     out.y = v.y * s;
@@ -350,9 +324,9 @@ export class Vec2 implements Vec2Mut {
 
   static normalize(v: Vec2, out: Vec2 | null = null): Vec2 {
     if (out === null) out = new Vec2();
-    const len: f64 = Math.sqrt(v.x * v.x + v.y * v.y);
+    const len: number = Math.sqrt(v.x * v.x + v.y * v.y);
     if (len > EPSILON) {
-      const invLen: f64 = 1.0 / len;
+      const invLen: number = 1.0 / len;
       out.x = v.x * invLen;
       out.y = v.y * invLen;
     } else {
@@ -362,33 +336,30 @@ export class Vec2 implements Vec2Mut {
     return out;
   }
 
-  static lerp(a: Vec2, b: Vec2, t: f64, out: Vec2 | null = null): Vec2 {
+  static lerp(a: Vec2, b: Vec2, t: number, out: Vec2 | null = null): Vec2 {
     if (out === null) out = new Vec2();
     out.x = a.x + (b.x - a.x) * t;
     out.y = a.y + (b.y - a.y) * t;
     return out;
   }
 
-  @inline
-  static dot(a: Vec2, b: Vec2): f64 {
+  static dot(a: Vec2, b: Vec2): number {
     return a.x * b.x + a.y * b.y;
   }
 
-  @inline
-  static cross(a: Vec2, b: Vec2): f64 {
+  static cross(a: Vec2, b: Vec2): number {
     return a.x * b.y - a.y * b.x;
   }
 
-  static distance(a: Vec2, b: Vec2): f64 {
-    const dx: f64 = a.x - b.x;
-    const dy: f64 = a.y - b.y;
+  static distance(a: Vec2, b: Vec2): number {
+    const dx: number = a.x - b.x;
+    const dy: number = a.y - b.y;
     return Math.sqrt(dx * dx + dy * dy);
   }
 
-  @inline
-  static distanceSq(a: Vec2, b: Vec2): f64 {
-    const dx: f64 = a.x - b.x;
-    const dy: f64 = a.y - b.y;
+  static distanceSq(a: Vec2, b: Vec2): number {
+    const dx: number = a.x - b.x;
+    const dy: number = a.y - b.y;
     return dx * dx + dy * dy;
   }
 
@@ -408,7 +379,7 @@ export class Vec2 implements Vec2Mut {
 
   static reflect(v: Vec2, n: Vec2, out: Vec2 | null = null): Vec2 {
     if (out === null) out = new Vec2();
-    const d: f64 = 2.0 * (v.x * n.x + v.y * n.y);
+    const d: number = 2.0 * (v.x * n.x + v.y * n.y);
     out.x = v.x - n.x * d;
     out.y = v.y - n.y * d;
     return out;

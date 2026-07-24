@@ -11,7 +11,7 @@ export class Ray {
     this.direction = new Vec3(0, 0, 1);
   }
 
-  static create(ox: f64, oy: f64, oz: f64, dx: f64, dy: f64, dz: f64): Ray {
+  static create(ox: number, oy: number, oz: number, dx: number, dy: number, dz: number): Ray {
     const ray = new Ray();
     ray.origin.set(ox, oy, oz);
     ray.direction.set(dx, dy, dz).normalize();
@@ -35,7 +35,7 @@ export class Ray {
     return ray;
   }
 
-  set(ox: f64, oy: f64, oz: f64, dx: f64, dy: f64, dz: f64): this {
+  set(ox: number, oy: number, oz: number, dx: number, dy: number, dz: number): this {
     this.origin.set(ox, oy, oz);
     this.direction.set(dx, dy, dz).normalize();
     return this;
@@ -51,7 +51,7 @@ export class Ray {
     return new Ray().copy(this);
   }
 
-  setOrigin(x: f64, y: f64, z: f64): this {
+  setOrigin(x: number, y: number, z: number): this {
     this.origin.set(x, y, z);
     return this;
   }
@@ -61,7 +61,7 @@ export class Ray {
     return this;
   }
 
-  setDirection(x: f64, y: f64, z: f64): this {
+  setDirection(x: number, y: number, z: number): this {
     this.direction.set(x, y, z).normalize();
     return this;
   }
@@ -71,7 +71,7 @@ export class Ray {
     return this;
   }
 
-  lookAt(x: f64, y: f64, z: f64): this {
+  lookAt(x: number, y: number, z: number): this {
     this.direction.x = x - this.origin.x;
     this.direction.y = y - this.origin.y;
     this.direction.z = z - this.origin.z;
@@ -83,7 +83,7 @@ export class Ray {
     return this.lookAt(target.x, target.y, target.z);
   }
 
-  getPoint(t: f64, out: Vec3 | null = null): Vec3 {
+  getPoint(t: number, out: Vec3 | null = null): Vec3 {
     if (out === null) out = new Vec3();
     out.x = this.origin.x + this.direction.x * t;
     out.y = this.origin.y + this.direction.y * t;
@@ -91,14 +91,14 @@ export class Ray {
     return out;
   }
 
-  closestPointToPoint(x: f64, y: f64, z: f64, out: Vec3 | null = null): Vec3 {
+  closestPointToPoint(x: number, y: number, z: number, out: Vec3 | null = null): Vec3 {
     if (out === null) out = new Vec3();
     
     const dx = x - this.origin.x;
     const dy = y - this.origin.y;
     const dz = z - this.origin.z;
     
-    let t: f64 = dx * this.direction.x + dy * this.direction.y + dz * this.direction.z;
+    let t: number = dx * this.direction.x + dy * this.direction.y + dz * this.direction.z;
     if (t < 0) t = 0;
     
     out.x = this.origin.x + this.direction.x * t;
@@ -111,12 +111,12 @@ export class Ray {
     return this.closestPointToPoint(p.x, p.y, p.z, out);
   }
 
-  distanceToPoint(x: f64, y: f64, z: f64): f64 {
+  distanceToPoint(x: number, y: number, z: number): number {
     const dx = x - this.origin.x;
     const dy = y - this.origin.y;
     const dz = z - this.origin.z;
     
-    let t: f64 = dx * this.direction.x + dy * this.direction.y + dz * this.direction.z;
+    let t: number = dx * this.direction.x + dy * this.direction.y + dz * this.direction.z;
     if (t < 0) t = 0;
     
     const px = this.origin.x + this.direction.x * t - x;
@@ -126,16 +126,16 @@ export class Ray {
     return Math.sqrt(px * px + py * py + pz * pz);
   }
 
-  distanceToPointVec(p: Vec3): f64 {
+  distanceToPointVec(p: Vec3): number {
     return this.distanceToPoint(p.x, p.y, p.z);
   }
 
-  distanceToPointSq(x: f64, y: f64, z: f64): f64 {
+  distanceToPointSq(x: number, y: number, z: number): number {
     const dx = x - this.origin.x;
     const dy = y - this.origin.y;
     const dz = z - this.origin.z;
     
-    let t: f64 = dx * this.direction.x + dy * this.direction.y + dz * this.direction.z;
+    let t: number = dx * this.direction.x + dy * this.direction.y + dz * this.direction.z;
     if (t < 0) t = 0;
     
     const px = this.origin.x + this.direction.x * t - x;
@@ -145,33 +145,33 @@ export class Ray {
     return px * px + py * py + pz * pz;
   }
 
-  intersectAABB(aabb: AABB): f64 {
+  intersectAABB(aabb: AABB): number {
     const ox = this.origin.x, oy = this.origin.y, oz = this.origin.z;
     const dx = this.direction.x, dy = this.direction.y, dz = this.direction.z;
     
-    const invDx: f64 = dx == 0 ? Infinity : 1.0 / dx;
-    const invDy: f64 = dy == 0 ? Infinity : 1.0 / dy;
-    const invDz: f64 = dz == 0 ? Infinity : 1.0 / dz;
+    const invDx: number = dx == 0 ? Infinity : 1.0 / dx;
+    const invDy: number = dy == 0 ? Infinity : 1.0 / dy;
+    const invDz: number = dz == 0 ? Infinity : 1.0 / dz;
 
-    let t1: f64 = (aabb.min.x - ox) * invDx;
-    let t2: f64 = (aabb.max.x - ox) * invDx;
-    let t3: f64 = (aabb.min.y - oy) * invDy;
-    let t4: f64 = (aabb.max.y - oy) * invDy;
-    let t5: f64 = (aabb.min.z - oz) * invDz;
-    let t6: f64 = (aabb.max.z - oz) * invDz;
+    let t1: number = (aabb.min.x - ox) * invDx;
+    let t2: number = (aabb.max.x - ox) * invDx;
+    let t3: number = (aabb.min.y - oy) * invDy;
+    let t4: number = (aabb.max.y - oy) * invDy;
+    let t5: number = (aabb.min.z - oz) * invDz;
+    let t6: number = (aabb.max.z - oz) * invDz;
 
-    const tmin1: f64 = t1 < t2 ? t1 : t2;
-    const tmax1: f64 = t1 > t2 ? t1 : t2;
-    const tmin2: f64 = t3 < t4 ? t3 : t4;
-    const tmax2: f64 = t3 > t4 ? t3 : t4;
-    const tmin3: f64 = t5 < t6 ? t5 : t6;
-    const tmax3: f64 = t5 > t6 ? t5 : t6;
+    const tmin1: number = t1 < t2 ? t1 : t2;
+    const tmax1: number = t1 > t2 ? t1 : t2;
+    const tmin2: number = t3 < t4 ? t3 : t4;
+    const tmax2: number = t3 > t4 ? t3 : t4;
+    const tmin3: number = t5 < t6 ? t5 : t6;
+    const tmax3: number = t5 > t6 ? t5 : t6;
 
-    let tmin: f64 = tmin1;
+    let tmin: number = tmin1;
     if (tmin2 > tmin) tmin = tmin2;
     if (tmin3 > tmin) tmin = tmin3;
 
-    let tmax: f64 = tmax1;
+    let tmax: number = tmax1;
     if (tmax2 < tmax) tmax = tmax2;
     if (tmax3 < tmax) tmax = tmax3;
 
@@ -182,57 +182,57 @@ export class Ray {
     return tmin >= 0 ? tmin : tmax;
   }
 
-  intersectsAABB(aabb: AABB): bool {
+  intersectsAABB(aabb: AABB): boolean {
     return this.intersectAABB(aabb) >= 0;
   }
 
-  intersectSphere(centerX: f64, centerY: f64, centerZ: f64, radius: f64): f64 {
+  intersectSphere(centerX: number, centerY: number, centerZ: number, radius: number): number {
     const ox = this.origin.x - centerX;
     const oy = this.origin.y - centerY;
     const oz = this.origin.z - centerZ;
 
-    const a: f64 = this.direction.x * this.direction.x + 
+    const a: number = this.direction.x * this.direction.x + 
                    this.direction.y * this.direction.y + 
                    this.direction.z * this.direction.z;
-    const b: f64 = 2.0 * (ox * this.direction.x + oy * this.direction.y + oz * this.direction.z);
-    const c: f64 = ox * ox + oy * oy + oz * oz - radius * radius;
+    const b: number = 2.0 * (ox * this.direction.x + oy * this.direction.y + oz * this.direction.z);
+    const c: number = ox * ox + oy * oy + oz * oz - radius * radius;
 
-    const discriminant: f64 = b * b - 4.0 * a * c;
+    const discriminant: number = b * b - 4.0 * a * c;
 
     if (discriminant < 0) {
       return -1;
     }
 
-    const sqrtD: f64 = Math.sqrt(discriminant);
-    const t1: f64 = (-b - sqrtD) / (2.0 * a);
-    const t2: f64 = (-b + sqrtD) / (2.0 * a);
+    const sqrtD: number = Math.sqrt(discriminant);
+    const t1: number = (-b - sqrtD) / (2.0 * a);
+    const t2: number = (-b + sqrtD) / (2.0 * a);
 
     if (t1 >= 0) return t1;
     if (t2 >= 0) return t2;
     return -1;
   }
 
-  intersectSphereVec(center: Vec3, radius: f64): f64 {
+  intersectSphereVec(center: Vec3, radius: number): number {
     return this.intersectSphere(center.x, center.y, center.z, radius);
   }
 
-  intersectPlane(nx: f64, ny: f64, nz: f64, d: f64): f64 {
-    const denom: f64 = nx * this.direction.x + ny * this.direction.y + nz * this.direction.z;
+  intersectPlane(nx: number, ny: number, nz: number, d: number): number {
+    const denom: number = nx * this.direction.x + ny * this.direction.y + nz * this.direction.z;
     
     if (denom > -EPSILON && denom < EPSILON) {
       return -1; // Parallel
     }
 
-    const t: f64 = -(nx * this.origin.x + ny * this.origin.y + nz * this.origin.z + d) / denom;
+    const t: number = -(nx * this.origin.x + ny * this.origin.y + nz * this.origin.z + d) / denom;
     
     return t >= 0 ? t : -1;
   }
 
-  intersectPlaneVec(normal: Vec3, d: f64): f64 {
+  intersectPlaneVec(normal: Vec3, d: number): number {
     return this.intersectPlane(normal.x, normal.y, normal.z, d);
   }
 
-  intersectTriangle(v0: Vec3, v1: Vec3, v2: Vec3): f64 {
+  intersectTriangle(v0: Vec3, v1: Vec3, v2: Vec3): number {
     const edge1x = v1.x - v0.x, edge1y = v1.y - v0.y, edge1z = v1.z - v0.z;
     const edge2x = v2.x - v0.x, edge2y = v2.y - v0.y, edge2z = v2.z - v0.z;
 
@@ -241,13 +241,13 @@ export class Ray {
     const py = this.direction.z * edge2x - this.direction.x * edge2z;
     const pz = this.direction.x * edge2y - this.direction.y * edge2x;
 
-    const det: f64 = edge1x * px + edge1y * py + edge1z * pz;
+    const det: number = edge1x * px + edge1y * py + edge1z * pz;
 
     if (det > -EPSILON && det < EPSILON) {
       return -1; // Ray parallel to triangle
     }
 
-    const invDet: f64 = 1.0 / det;
+    const invDet: number = 1.0 / det;
 
     // T = O - v0
     const tx = this.origin.x - v0.x;
@@ -255,7 +255,7 @@ export class Ray {
     const tz = this.origin.z - v0.z;
 
     // u = T . P * invDet
-    const u: f64 = (tx * px + ty * py + tz * pz) * invDet;
+    const u: number = (tx * px + ty * py + tz * pz) * invDet;
     if (u < 0 || u > 1) {
       return -1;
     }
@@ -266,18 +266,18 @@ export class Ray {
     const qz = tx * edge1y - ty * edge1x;
 
     // v = D . Q * invDet
-    const v: f64 = (this.direction.x * qx + this.direction.y * qy + this.direction.z * qz) * invDet;
+    const v: number = (this.direction.x * qx + this.direction.y * qy + this.direction.z * qz) * invDet;
     if (v < 0 || u + v > 1) {
       return -1;
     }
 
     // t = edge2 . Q * invDet
-    const t: f64 = (edge2x * qx + edge2y * qy + edge2z * qz) * invDet;
+    const t: number = (edge2x * qx + edge2y * qy + edge2z * qz) * invDet;
 
     return t >= 0 ? t : -1;
   }
 
-  equals(other: Ray, epsilon: f64 = EPSILON): bool {
+  equals(other: Ray, epsilon: number = EPSILON): boolean {
     return this.origin.equals(other.origin, epsilon) && 
            this.direction.equals(other.direction, epsilon);
   }

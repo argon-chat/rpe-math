@@ -3,23 +3,23 @@ import { Vec3 } from './Vec3';
 import { Mat4 } from './Mat4';
 
 export class Quat {
-  x: f64;
-  y: f64;
-  z: f64;
-  w: f64;
+  x: number;
+  y: number;
+  z: number;
+  w: number;
 
-  constructor(x: f64 = 0, y: f64 = 0, z: f64 = 0, w: f64 = 1) {
+  constructor(x: number = 0, y: number = 0, z: number = 0, w: number = 1) {
     this.x = x;
     this.y = y;
     this.z = z;
     this.w = w;
   }
 
-  @inline static identity(): Quat { return new Quat(0, 0, 0, 1); }
+  static identity(): Quat { return new Quat(0, 0, 0, 1); }
 
-  static fromAxisAngle(axis: Vec3, radians: f64): Quat {
-    const halfAngle: f64 = radians * 0.5;
-    const s: f64 = Math.sin(halfAngle);
+  static fromAxisAngle(axis: Vec3, radians: number): Quat {
+    const halfAngle: number = radians * 0.5;
+    const s: number = Math.sin(halfAngle);
     return new Quat(
       axis.x * s,
       axis.y * s,
@@ -28,17 +28,17 @@ export class Quat {
     );
   }
 
-  static fromEuler(x: f64, y: f64, z: f64): Quat {
-    const hx: f64 = x * 0.5;
-    const hy: f64 = y * 0.5;
-    const hz: f64 = z * 0.5;
+  static fromEuler(x: number, y: number, z: number): Quat {
+    const hx: number = x * 0.5;
+    const hy: number = y * 0.5;
+    const hz: number = z * 0.5;
 
-    const cx: f64 = Math.cos(hx);
-    const sx: f64 = Math.sin(hx);
-    const cy: f64 = Math.cos(hy);
-    const sy: f64 = Math.sin(hy);
-    const cz: f64 = Math.cos(hz);
-    const sz: f64 = Math.sin(hz);
+    const cx: number = Math.cos(hx);
+    const sx: number = Math.sin(hx);
+    const cy: number = Math.cos(hy);
+    const sy: number = Math.sin(hy);
+    const cz: number = Math.cos(hz);
+    const sz: number = Math.sin(hz);
 
     return new Quat(
       sx * cy * cz - cx * sy * sz,
@@ -50,28 +50,28 @@ export class Quat {
 
   static fromRotationMatrix(m: Mat4): Quat {
     const q = new Quat();
-    const trace: f64 = m.m00 + m.m05 + m.m10;
+    const trace: number = m.m00 + m.m05 + m.m10;
 
     if (trace > 0) {
-      const s: f64 = 0.5 / Math.sqrt(trace + 1.0);
+      const s: number = 0.5 / Math.sqrt(trace + 1.0);
       q.w = 0.25 / s;
       q.x = (m.m06 - m.m09) * s;
       q.y = (m.m08 - m.m02) * s;
       q.z = (m.m01 - m.m04) * s;
     } else if (m.m00 > m.m05 && m.m00 > m.m10) {
-      const s: f64 = 2.0 * Math.sqrt(1.0 + m.m00 - m.m05 - m.m10);
+      const s: number = 2.0 * Math.sqrt(1.0 + m.m00 - m.m05 - m.m10);
       q.w = (m.m06 - m.m09) / s;
       q.x = 0.25 * s;
       q.y = (m.m04 + m.m01) / s;
       q.z = (m.m08 + m.m02) / s;
     } else if (m.m05 > m.m10) {
-      const s: f64 = 2.0 * Math.sqrt(1.0 + m.m05 - m.m00 - m.m10);
+      const s: number = 2.0 * Math.sqrt(1.0 + m.m05 - m.m00 - m.m10);
       q.w = (m.m08 - m.m02) / s;
       q.x = (m.m04 + m.m01) / s;
       q.y = 0.25 * s;
       q.z = (m.m09 + m.m06) / s;
     } else {
-      const s: f64 = 2.0 * Math.sqrt(1.0 + m.m10 - m.m00 - m.m05);
+      const s: number = 2.0 * Math.sqrt(1.0 + m.m10 - m.m00 - m.m05);
       q.w = (m.m01 - m.m04) / s;
       q.x = (m.m08 + m.m02) / s;
       q.y = (m.m09 + m.m06) / s;
@@ -81,8 +81,7 @@ export class Quat {
     return q;
   }
 
-  @inline
-  set(x: f64, y: f64, z: f64, w: f64): this {
+  set(x: number, y: number, z: number, w: number): this {
     this.x = x;
     this.y = y;
     this.z = z;
@@ -90,7 +89,6 @@ export class Quat {
     return this;
   }
 
-  @inline
   copy(q: Quat): this {
     this.x = q.x;
     this.y = q.y;
@@ -99,12 +97,10 @@ export class Quat {
     return this;
   }
 
-  @inline
   clone(): Quat {
     return new Quat(this.x, this.y, this.z, this.w);
   }
 
-  @inline
   setIdentity(): this {
     this.x = 0;
     this.y = 0;
@@ -138,9 +134,9 @@ export class Quat {
   }
 
   normalize(): this {
-    const len: f64 = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
+    const len: number = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
     if (len > EPSILON) {
-      const invLen: f64 = 1.0 / len;
+      const invLen: number = 1.0 / len;
       this.x *= invLen;
       this.y *= invLen;
       this.z *= invLen;
@@ -157,9 +153,9 @@ export class Quat {
   }
 
   invert(): this {
-    const len2: f64 = this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
+    const len2: number = this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
     if (len2 < EPSILON) return this;
-    const invLen2: f64 = 1.0 / len2;
+    const invLen2: number = 1.0 / len2;
     this.x = -this.x * invLen2;
     this.y = -this.y * invLen2;
     this.z = -this.z * invLen2;
@@ -167,10 +163,10 @@ export class Quat {
     return this;
   }
 
-  rotateX(radians: f64): this {
-    const halfAngle: f64 = radians * 0.5;
-    const bx: f64 = Math.sin(halfAngle);
-    const bw: f64 = Math.cos(halfAngle);
+  rotateX(radians: number): this {
+    const halfAngle: number = radians * 0.5;
+    const bx: number = Math.sin(halfAngle);
+    const bw: number = Math.cos(halfAngle);
 
     const ax = this.x, ay = this.y, az = this.z, aw = this.w;
 
@@ -182,10 +178,10 @@ export class Quat {
     return this;
   }
 
-  rotateY(radians: f64): this {
-    const halfAngle: f64 = radians * 0.5;
-    const by: f64 = Math.sin(halfAngle);
-    const bw: f64 = Math.cos(halfAngle);
+  rotateY(radians: number): this {
+    const halfAngle: number = radians * 0.5;
+    const by: number = Math.sin(halfAngle);
+    const bw: number = Math.cos(halfAngle);
 
     const ax = this.x, ay = this.y, az = this.z, aw = this.w;
 
@@ -197,10 +193,10 @@ export class Quat {
     return this;
   }
 
-  rotateZ(radians: f64): this {
-    const halfAngle: f64 = radians * 0.5;
-    const bz: f64 = Math.sin(halfAngle);
-    const bw: f64 = Math.cos(halfAngle);
+  rotateZ(radians: number): this {
+    const halfAngle: number = radians * 0.5;
+    const bz: number = Math.sin(halfAngle);
+    const bw: number = Math.cos(halfAngle);
 
     const ax = this.x, ay = this.y, az = this.z, aw = this.w;
 
@@ -212,9 +208,9 @@ export class Quat {
     return this;
   }
 
-  setFromAxisAngle(axis: Vec3, radians: f64): this {
-    const halfAngle: f64 = radians * 0.5;
-    const s: f64 = Math.sin(halfAngle);
+  setFromAxisAngle(axis: Vec3, radians: number): this {
+    const halfAngle: number = radians * 0.5;
+    const s: number = Math.sin(halfAngle);
     this.x = axis.x * s;
     this.y = axis.y * s;
     this.z = axis.z * s;
@@ -222,17 +218,17 @@ export class Quat {
     return this;
   }
 
-  setFromEuler(x: f64, y: f64, z: f64): this {
-    const hx: f64 = x * 0.5;
-    const hy: f64 = y * 0.5;
-    const hz: f64 = z * 0.5;
+  setFromEuler(x: number, y: number, z: number): this {
+    const hx: number = x * 0.5;
+    const hy: number = y * 0.5;
+    const hz: number = z * 0.5;
 
-    const cx: f64 = Math.cos(hx);
-    const sx: f64 = Math.sin(hx);
-    const cy: f64 = Math.cos(hy);
-    const sy: f64 = Math.sin(hy);
-    const cz: f64 = Math.cos(hz);
-    const sz: f64 = Math.sin(hz);
+    const cx: number = Math.cos(hx);
+    const sx: number = Math.sin(hx);
+    const cy: number = Math.cos(hy);
+    const sy: number = Math.sin(hy);
+    const cz: number = Math.cos(hz);
+    const sz: number = Math.sin(hz);
 
     this.x = sx * cy * cz - cx * sy * sz;
     this.y = cx * sy * cz + sx * cy * sz;
@@ -242,14 +238,14 @@ export class Quat {
     return this;
   }
 
-  slerp(q: Quat, t: f64): this {
+  slerp(q: Quat, t: number): this {
     if (t <= 0) return this;
     if (t >= 1) return this.copy(q);
 
     let ax = this.x, ay = this.y, az = this.z, aw = this.w;
     let bx = q.x, by = q.y, bz = q.z, bw = q.w;
 
-    let cosHalfTheta: f64 = ax * bx + ay * by + az * bz + aw * bw;
+    let cosHalfTheta: number = ax * bx + ay * by + az * bz + aw * bw;
 
     if (cosHalfTheta < 0) {
       bx = -bx; by = -by; bz = -bz; bw = -bw;
@@ -260,7 +256,7 @@ export class Quat {
       return this;
     }
 
-    const sqrSinHalfTheta: f64 = 1.0 - cosHalfTheta * cosHalfTheta;
+    const sqrSinHalfTheta: number = 1.0 - cosHalfTheta * cosHalfTheta;
 
     if (sqrSinHalfTheta < 0.001) {
       // Linear interpolation for small angles
@@ -271,10 +267,10 @@ export class Quat {
       return this.normalize();
     }
 
-    const sinHalfTheta: f64 = Math.sqrt(sqrSinHalfTheta);
-    const halfTheta: f64 = Math.atan2(sinHalfTheta, cosHalfTheta);
-    const ratioA: f64 = Math.sin((1.0 - t) * halfTheta) / sinHalfTheta;
-    const ratioB: f64 = Math.sin(t * halfTheta) / sinHalfTheta;
+    const sinHalfTheta: number = Math.sqrt(sqrSinHalfTheta);
+    const halfTheta: number = Math.atan2(sinHalfTheta, cosHalfTheta);
+    const ratioA: number = Math.sin((1.0 - t) * halfTheta) / sinHalfTheta;
+    const ratioB: number = Math.sin(t * halfTheta) / sinHalfTheta;
 
     this.x = ax * ratioA + bx * ratioB;
     this.y = ay * ratioA + by * ratioB;
@@ -284,26 +280,23 @@ export class Quat {
     return this;
   }
 
-  @inline
-  dot(q: Quat): f64 {
+  dot(q: Quat): number {
     return this.x * q.x + this.y * q.y + this.z * q.z + this.w * q.w;
   }
 
-  @inline
-  lengthSq(): f64 {
+  lengthSq(): number {
     return this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w;
   }
 
-  @inline
-  length(): f64 {
+  length(): number {
     return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z + this.w * this.w);
   }
 
-  getAxisAngle(outAxis: Vec3 | null = null): f64 {
+  getAxisAngle(outAxis: Vec3 | null = null): number {
     if (outAxis === null) outAxis = new Vec3();
 
-    const rad: f64 = Math.acos(this.w) * 2.0;
-    const s: f64 = Math.sin(rad / 2.0);
+    const rad: number = Math.acos(this.w) * 2.0;
+    const s: number = Math.sin(rad / 2.0);
 
     if (s > EPSILON) {
       outAxis.x = this.x / s;
@@ -328,12 +321,12 @@ export class Quat {
     const wx = w * x2, wy = w * y2, wz = w * z2;
 
     // Assuming XYZ rotation order
-    const m11: f64 = 1.0 - (yy + zz);
-    const m12: f64 = xy - wz;
-    const m13: f64 = xz + wy;
-    const m22: f64 = 1.0 - (xx + zz);
-    const m23: f64 = yz - wx;
-    const m33: f64 = 1.0 - (xx + yy);
+    const m11: number = 1.0 - (yy + zz);
+    const m12: number = xy - wz;
+    const m13: number = xz + wy;
+    const m22: number = 1.0 - (xx + zz);
+    const m23: number = yz - wx;
+    const m33: number = 1.0 - (xx + yy);
 
     out.y = Math.asin(m13 < -1 ? -1 : (m13 > 1 ? 1 : m13));
 
@@ -380,14 +373,14 @@ export class Quat {
     return out;
   }
 
-  equals(q: Quat, epsilon: f64 = EPSILON): bool {
+  equals(q: Quat, epsilon: number = EPSILON): boolean {
     return approxEqual(this.x, q.x, epsilon) &&
            approxEqual(this.y, q.y, epsilon) &&
            approxEqual(this.z, q.z, epsilon) &&
            approxEqual(this.w, q.w, epsilon);
   }
 
-  exactEquals(q: Quat): bool {
+  exactEquals(q: Quat): boolean {
     return this.x == q.x && this.y == q.y && this.z == q.z && this.w == q.w;
   }
 
@@ -425,14 +418,13 @@ export class Quat {
     return out;
   }
 
-  static slerp(a: Quat, b: Quat, t: f64, out: Quat | null = null): Quat {
+  static slerp(a: Quat, b: Quat, t: number, out: Quat | null = null): Quat {
     if (out === null) out = new Quat();
     out.copy(a).slerp(b, t);
     return out;
   }
 
-  @inline
-  static dot(a: Quat, b: Quat): f64 {
+  static dot(a: Quat, b: Quat): number {
     return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
   }
 
@@ -447,7 +439,7 @@ export class Quat {
 
   static invert(q: Quat, out: Quat | null = null): Quat {
     if (out === null) out = new Quat();
-    const len2: f64 = q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w;
+    const len2: number = q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w;
     if (len2 < EPSILON) {
       out.x = 0;
       out.y = 0;
@@ -455,7 +447,7 @@ export class Quat {
       out.w = 1;
       return out;
     }
-    const invLen2: f64 = 1.0 / len2;
+    const invLen2: number = 1.0 / len2;
     out.x = -q.x * invLen2;
     out.y = -q.y * invLen2;
     out.z = -q.z * invLen2;
@@ -465,9 +457,9 @@ export class Quat {
 
   static normalize(q: Quat, out: Quat | null = null): Quat {
     if (out === null) out = new Quat();
-    const len: f64 = Math.sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
+    const len: number = Math.sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
     if (len > EPSILON) {
-      const invLen: f64 = 1.0 / len;
+      const invLen: number = 1.0 / len;
       out.x = q.x * invLen;
       out.y = q.y * invLen;
       out.z = q.z * invLen;
