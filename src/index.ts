@@ -11,6 +11,8 @@ export {
   signF64, signI32
 } from './constants';
 
+export { srgbToLinear, linearToSrgb } from './color';
+
 export { Vec2, type Vec2Like, type Vec2Mut } from './Vec2';
 export { Vec3 } from './Vec3';
 export { Vec4 } from './Vec4';
