@@ -12,6 +12,7 @@ export {
 } from './constants';
 
 export { srgbToLinear, linearToSrgb } from './color';
+export { worldToCameraRelative } from './cameraRelative';
 
 export { Vec2, type Vec2Like, type Vec2Mut } from './Vec2';
 export { Vec3 } from './Vec3';
