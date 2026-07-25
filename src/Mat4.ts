@@ -418,6 +418,7 @@ export class Mat4 {
     return out;
   }
 
+  /** GL-convention perspective (clip depth [-1, 1]). WebGPU render paths use {@link perspectiveZO}. */
   static perspective(fovY: number, aspect: number, near: number, far: number, out: Mat4 | null = null): Mat4 {
     if (out === null) out = new Mat4();
 
@@ -432,6 +433,27 @@ export class Mat4 {
     return out;
   }
 
+  /**
+   * Perspective with clip depth [0, 1] (WebGPU/Vulkan/D3D convention) — the 3D
+   * render path's projection ({@link perspective} maps to GL's [-1, 1]: on
+   * WebGPU that clips away everything between the near plane and mid-depth).
+   * Reversed-Z (RND-4) will swap near/far through this same entry.
+   */
+  static perspectiveZO(fovY: number, aspect: number, near: number, far: number, out: Mat4 | null = null): Mat4 {
+    if (out === null) out = new Mat4();
+
+    const f: number = 1.0 / Math.tan(fovY / 2.0);
+    const nf: number = 1.0 / (near - far);
+
+    out.m00 = f / aspect; out.m01 = 0; out.m02 = 0; out.m03 = 0;
+    out.m04 = 0; out.m05 = f; out.m06 = 0; out.m07 = 0;
+    out.m08 = 0; out.m09 = 0; out.m10 = far * nf; out.m11 = -1;
+    out.m12 = 0; out.m13 = 0; out.m14 = far * near * nf; out.m15 = 0;
+
+    return out;
+  }
+
+  /** GL-convention ortho (clip depth [-1, 1]) — the shipped 2D path (content sits at z≈0, mid-range). */
   static ortho(left: number, right: number, bottom: number, top: number, near: number, far: number, out: Mat4 | null = null): Mat4 {
     if (out === null) out = new Mat4();
 
@@ -443,6 +465,22 @@ export class Mat4 {
     out.m04 = 0; out.m05 = -2 * bt; out.m06 = 0; out.m07 = 0;
     out.m08 = 0; out.m09 = 0; out.m10 = 2 * nf; out.m11 = 0;
     out.m12 = (left + right) * lr; out.m13 = (top + bottom) * bt; out.m14 = (far + near) * nf; out.m15 = 1;
+
+    return out;
+  }
+
+  /** Ortho with clip depth [0, 1] (WebGPU convention) — pairs with {@link perspectiveZO} on the 3D path. */
+  static orthoZO(left: number, right: number, bottom: number, top: number, near: number, far: number, out: Mat4 | null = null): Mat4 {
+    if (out === null) out = new Mat4();
+
+    const lr: number = 1.0 / (left - right);
+    const bt: number = 1.0 / (bottom - top);
+    const nf: number = 1.0 / (near - far);
+
+    out.m00 = -2 * lr; out.m01 = 0; out.m02 = 0; out.m03 = 0;
+    out.m04 = 0; out.m05 = -2 * bt; out.m06 = 0; out.m07 = 0;
+    out.m08 = 0; out.m09 = 0; out.m10 = nf; out.m11 = 0;
+    out.m12 = (left + right) * lr; out.m13 = (top + bottom) * bt; out.m14 = near * nf; out.m15 = 1;
 
     return out;
   }
