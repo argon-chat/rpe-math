@@ -28,6 +28,7 @@ export class Quat {
     );
   }
 
+  /** Euler (radians, intrinsic XYZ order — the inverse of {@link toEuler}) → quaternion. */
   static fromEuler(x: number, y: number, z: number): Quat {
     const hx: number = x * 0.5;
     const hy: number = y * 0.5;
@@ -40,11 +41,12 @@ export class Quat {
     const cz: number = Math.cos(hz);
     const sz: number = Math.sin(hz);
 
+    // XYZ product signs (was ZYX, which made fromEuler/toEuler a non-inverse pair)
     return new Quat(
-      sx * cy * cz - cx * sy * sz,
-      cx * sy * cz + sx * cy * sz,
-      cx * cy * sz - sx * sy * cz,
-      cx * cy * cz + sx * sy * sz
+      sx * cy * cz + cx * sy * sz,
+      cx * sy * cz - sx * cy * sz,
+      cx * cy * sz + sx * sy * cz,
+      cx * cy * cz - sx * sy * sz
     );
   }
 
@@ -218,6 +220,7 @@ export class Quat {
     return this;
   }
 
+  /** Euler (radians, intrinsic XYZ order — the inverse of {@link toEuler}) → this quaternion. */
   setFromEuler(x: number, y: number, z: number): this {
     const hx: number = x * 0.5;
     const hy: number = y * 0.5;
@@ -230,10 +233,11 @@ export class Quat {
     const cz: number = Math.cos(hz);
     const sz: number = Math.sin(hz);
 
-    this.x = sx * cy * cz - cx * sy * sz;
-    this.y = cx * sy * cz + sx * cy * sz;
-    this.z = cx * cy * sz - sx * sy * cz;
-    this.w = cx * cy * cz + sx * sy * sz;
+    // XYZ product signs — must stay the inverse of toEuler (see fromEuler)
+    this.x = sx * cy * cz + cx * sy * sz;
+    this.y = cx * sy * cz - sx * cy * sz;
+    this.z = cx * cy * sz + sx * sy * cz;
+    this.w = cx * cy * cz - sx * sy * sz;
 
     return this;
   }
