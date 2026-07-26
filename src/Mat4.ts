@@ -262,7 +262,12 @@ export class Mat4 {
 
     let det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
 
-    if (det < EPSILON && det > -EPSILON) {
+    // Only a ZERO determinant is non-invertible. Rejecting merely SMALL ones returned the original
+    // matrix — an inverse-shaped lie, silently wrong at exactly the scales this engine uses: a
+    // pixel-space 2D view-projection has det ≈ −2e−6 at 1920×1080 zoom 1 and ≈ −7e−8 at 2560×1440
+    // zoom 0.25, so `Camera2D.screenToWorld` / `getVisibleBounds` (and every cull built on them)
+    // collapsed to the camera position on any zoomed-out viewport. f64 inverts those exactly.
+    if (det === 0 || !Number.isFinite(det)) {
       return this; // Non-invertible
     }
 

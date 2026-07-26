@@ -208,6 +208,30 @@ describe('Mat4', () => {
       expect(result.m10).toBeCloseTo(1, 4);
       expect(result.m15).toBeCloseTo(1, 4);
     });
+
+    it('inverts a tiny-determinant matrix instead of silently returning it unchanged', () => {
+      // A pixel-space 2D view-projection: det ≈ −7e−8 at 2560×1440 zoom 0.25. An epsilon-based
+      // "non-invertible" guard used to return the ORIGINAL matrix here, which made
+      // Camera2D.screenToWorld/getVisibleBounds collapse to the camera position on zoomed-out
+      // viewports. Only det === 0 (or non-finite) may bail.
+      const vp = Mat4.ortho(-1280, 1280, -720, 720, -1, 1);
+      vp.scale(0.25, 0.25, 1);
+      const inv = vp.clone().invert();
+      const id = Mat4.multiply(vp, inv);
+      expect(id.m00).toBeCloseTo(1, 9);
+      expect(id.m05).toBeCloseTo(1, 9);
+      expect(id.m10).toBeCloseTo(1, 9);
+      expect(id.m15).toBeCloseTo(1, 9);
+      // NDC x = -1 must map back to the left edge of the view, not to ~0.
+      expect(inv.m00 * -1 + inv.m12).toBeCloseTo(-5120, 6);
+    });
+
+    it('still bails on a genuinely singular matrix (zero determinant)', () => {
+      const singular = Mat4.fromScaling(1, 1, 0);
+      const before = singular.clone();
+      singular.invert();
+      expect(singular.equals(before)).toBe(true);
+    });
   });
 
   describe('vector transformation', () => {
